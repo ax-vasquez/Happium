@@ -1,0 +1,13 @@
+/**
+ * Base configuration for this sub module is inherited
+ * from the happium build.gradle file.
+ */
+jar {
+    baseName = 'eureka-registry-service'
+    version = '0.0.1-SNAPSHOT'
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web')                 // Spring Web
+    compile('org.springframework.cloud:spring-cloud-netflix-eureka-server')     // Spring Cloud Netflix Eureka Server
+}

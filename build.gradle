@@ -1,0 +1,83 @@
+// Buildscript block controls dependencies for the buildscript PROCESS itself - not the application code
+buildscript {
+    ext {
+        springBootVersion = '1.5.9.RELEASE'
+        springDependencyManagementPluginVersion = "1.0.5.BUILD-SNAPSHOT"
+    }
+    repositories {
+
+        // Required for spring-boot-gradle-plugin
+        maven { url 'https://repo.spring.io/libs-snapshot' }
+
+        // Required for dependency-management plugin
+        maven { url 'https://repo.spring.io/plugins-snapshot' }
+
+    }
+    dependencies {
+
+        // Provides Spring support in Gradle
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+
+        // Gradle plugin that provides Maven-like dependency management functionality
+        classpath "io.spring.gradle:dependency-management-plugin:${springDependencyManagementPluginVersion}"
+
+    }
+}
+
+allprojects {
+    group 'io.happium'          // Project Owner
+    version '1.0-SNAPSHOT'      // Snapshot version - not yet released
+
+    apply plugin: 'java'                                // Required to enable Java compilation and tests via Gradle
+    apply plugin: 'idea'                                // Required for Intellij Users (run 'gradlew idea' after dependency changes)
+    apply plugin: 'org.springframework.boot'            // Required for Spring applications
+    apply plugin: 'io.spring.dependency-management'     // Required for Spring Cloud Netflix
+
+    sourceCompatibility = 1.8   // Java version to use
+
+    /**
+     * Spring's Dependency Management Plugin
+     *
+     * <p>
+     *     This plugin allows you to use a Maven bom to control your build's
+     *     dependencies with less code.
+     * <p>
+     *     In order for this to work, you must first apply the plugin to your
+     *     buildscript. This is seen above in the nested dependencies block
+     *     (within the buildscript block)
+     * <p>
+     *     Once the plugin has been applied, you can then use it to import
+     *     a Maven BOM (Bill of Materials). This is shown below, within this
+     *     dependencyManagement block.
+     * <p>
+     *     Once you have the Maven BOM, you can then declare dependencies on
+     *     anything in the BOM without specifying a version.
+     */
+    dependencyManagement {
+        imports {
+            mavenBom 'org.springframework.cloud:spring-cloud-netflix:1.4.0.RELEASE' // Netflix cloud services using this version
+        }
+    }
+
+    /**
+     * Declares the Repositories to Download Dependencies From
+     *
+     * <p>
+     *     The only repository for the root project is the mavenCentral()
+     *     repository - this enables the use of the spring-boot-starter-parent
+     */
+    repositories {
+        mavenCentral()
+    }
+
+    /**
+     * All submodules of the root application will use these dependencies.
+     * If more are needed for a specific sub module, then add the dependencies
+     * to the build.gradle file for that specific module - NOT in the root project
+     */
+    dependencies {
+        compile('org.projectlombok:lombok:1.16.16')                                 // Annotation processor
+        testCompile('org.springframework.boot:spring-boot-starter-test')            // Spring Boot Test framework
+    }
+}
+

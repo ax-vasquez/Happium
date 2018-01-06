@@ -1,0 +1,8 @@
+/**
+ * Base configuration for this sub module is inherited
+ * from the happium build.gradle file.
+ */
+jar {
+    baseName = 'appium-client-service'
+    version = '0.0.1-SNAPSHOT'
+}
