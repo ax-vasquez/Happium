@@ -5,6 +5,7 @@ import io.happium.android_device_manager_client_service.persistence.AndroidDevic
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import se.vidstige.jadb.DeviceWatcher;
 import se.vidstige.jadb.JadbConnection;
 import se.vidstige.jadb.JadbException;

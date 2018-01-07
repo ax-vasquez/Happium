@@ -8,8 +8,6 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.ElementOption;
 import io.appium.java_client.touch.offset.PointOption;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -23,17 +21,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
 
-/** Represents an Appium Session
- * Only one session can run on a server at a time - If multiple sessions are needed, then you must create as many
- * Appium servers as you want concurrent Appium sessions. E.g. If you want to run 3 concurrent Appium sessions, first
- * startup 3 Appium servers, then connect the sessions to those servers.
- *
- * @author Armando Vasquez
- * @author https://www.linkedin.com/in/axvasquez/
- * @author ar.xa.vasquez@gmail.com
- * @version 1.0
- * @since 1.0
- */
 @Component
 public class AppiumSession {
 
@@ -49,30 +36,10 @@ public class AppiumSession {
     /**
      * Basic Constructor - creates empty capabilities object
      */
-    public AppiumSession () {
+    public AppiumSession ( JsonObject capsObj ) {
         capabilities = new DesiredCapabilities();
-    }
-
-    public void initializeCapabilities( JsonObject capsObj ) {
-
-        Set<String> keys = capsObj.keySet();
-
-        for ( String key : keys ) {
-
-            String valString = capsObj.get( key ).toString();
-            capabilities.setCapability( key, valString );
-
-            if ( key.equals( "platformName" ) ) {
-
-                platform = valString;
-            }
-
-        }
-
-    }
-
-    public AppiumDriver getDriver() {
-        return driver;
+        swipeAnchors = new Hashtable<>();
+        _initializeCapabilities( capsObj );
     }
 
     /**
@@ -181,51 +148,16 @@ public class AppiumSession {
     }
 
     /**
-     * Generates relative Xpath locator string (this is the only "safe" way to use Xpath)
-     *
-     * NOTE!!! This method must be expanded with each newly-supported element type; this may need to change in the future
-     *
-     * @param prefixType                String value; use SessionConfig.XpathPrefixTypes to ensure supported values are used
-     * @param value                     Explicit identifier for the given element
-     * @return                          Fully qualified Xpath locator
-     */
-    public String generateRelativeXpath ( String prefixType, String value ) {
-
-        String completeRelativeXpath = "";
-
-        switch ( prefixType ) {
-
-            case "//android.widget.Button":
-                completeRelativeXpath = "//android.widget.Button"  + value ;
-                break;
-            case "//android.widget.TextView":
-                completeRelativeXpath = "//android.widget.TextView" + value;
-        }
-
-        return completeRelativeXpath;
-
-    }
-
-    /**
-     * Generates full ID locator for an element
-     *
-     * @param prefix                    String value; use SessionConfig.IDPrefixTypes to ensure supported values are used
-     * @param value                     Most-basic ID for the given element
-     * @return                          Fully qualified ID locator
-     */
-    public String generateID ( String prefix, String value ) {
-
-        return prefix + value;
-
-    }
-
-    /**
      * Dismiss keyboard
      */
     public void dismissKeyboard() {
         driver.hideKeyboard();
     }
 
+    /**
+     * Uses the AppiumDriver to set up the requirements needed
+     * in order to execute device gestures
+     */
     public void initializeGestureEngine( ) {
 
         deviceHeight = driver.manage().window().getSize().getHeight();
@@ -325,6 +257,10 @@ public class AppiumSession {
                 .perform();
     }
 
+    /**
+     * Controlling helper method that is responsible for initializing
+     * the swipe points needed to execute gestures.
+     */
     private void _initializeSwipeAnchors() {
 
         _initAnchors( deviceHeight,"yTop", "yMid", "yBot", 7 );
@@ -395,6 +331,24 @@ public class AppiumSession {
      */
     private Integer _selectCoordinate ( String key ) {
         return swipeAnchors.get(key);
+    }
+
+    private void _initializeCapabilities( JsonObject capsObj ) {
+
+        Set<String> keys = capsObj.keySet();
+
+        for ( String key : keys ) {
+
+            String valString = capsObj.get( key ).toString();
+            capabilities.setCapability( key, valString );
+
+            if ( key.equals( "platformName" ) ) {
+
+                platform = valString;
+            }
+
+        }
+
     }
 
 }

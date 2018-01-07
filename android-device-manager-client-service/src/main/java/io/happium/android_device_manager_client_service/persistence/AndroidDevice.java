@@ -6,10 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Map;
 
 @Entity
@@ -17,7 +14,7 @@ import java.util.Map;
 public class AndroidDevice {
 
     @Id
-    @Getter @Setter private String serial;
+    @Getter @Setter private String serial;      // Device associated with multiple Appium sessions
 
     /**
      * Android or iOS
