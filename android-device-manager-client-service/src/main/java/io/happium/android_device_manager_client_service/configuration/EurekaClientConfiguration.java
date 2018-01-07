@@ -10,13 +10,4 @@ import org.springframework.context.annotation.Configuration;
 @EnableDiscoveryClient
 public class EurekaClientConfiguration {
 
-    @Bean
-    public EurekaInstanceConfigBean eurekaInstanceConfigBean(InetUtils inetUtils) {
-
-        EurekaInstanceConfigBean eurekaInstanceConfigBean = new EurekaInstanceConfigBean( inetUtils );
-        eurekaInstanceConfigBean.setVirtualHostName("io.happium");
-        return eurekaInstanceConfigBean;
-
-    }
-
 }

@@ -6,3 +6,9 @@ jar {
     baseName = 'appium-client-service'
     version = '0.0.1-SNAPSHOT'
 }
+
+dependencies {
+    compile('io.appium:java-client:6.0.0-BETA2')
+    compile('org.springframework.boot:spring-boot-starter-web')                 // Spring Web
+    compile('org.springframework.cloud:spring-cloud-netflix-eureka-server')     // Spring Cloud Netflix Eureka Server
+}
