@@ -37,8 +37,6 @@ import java.util.Set;
 @Component
 public class AppiumSession {
 
-    static Logger logger = LogManager.getRootLogger();
-
     private DesiredCapabilities capabilities;
     private String platform; // Currently not in use, but is necessary for adding iOS support later
     private AppiumDriver driver;
@@ -66,8 +64,6 @@ public class AppiumSession {
 
             if ( key.equals( "platformName" ) ) {
 
-                logger.debug("Located platform name: " + valString );
-
                 platform = valString;
             }
 
@@ -88,8 +84,6 @@ public class AppiumSession {
 
         try {
 
-            logger.info("Starting android driver at URL: " + serverUrl );
-
             driver = new AndroidDriver<MobileElement>( new URL( serverUrl ), capabilities);
 
         } catch (MalformedURLException e) {
@@ -109,8 +103,6 @@ public class AppiumSession {
      * @param timeoutInSeconds          Amount of time to wait for the element's existence
      */
     public void waitForElementExistence (String findBy, String identifier, Integer timeoutInSeconds ) {
-
-        logger.info("Waiting for element existence - Element Identifier: " +  identifier );
 
         WebDriverWait wait = new WebDriverWait( driver, timeoutInSeconds );
 
@@ -141,8 +133,6 @@ public class AppiumSession {
      */
     public void waitForDuration (Integer milliseconds) {
 
-        logger.info("Explicit Wait: " +  milliseconds + " milliseconds" );
-
         try {
             Thread.sleep( milliseconds );
         } catch (InterruptedException e) {
@@ -158,8 +148,6 @@ public class AppiumSession {
      * @return                          Returns the found element
      */
     public MobileElement locateElement ( String locatorType, String locator) {
-
-        logger.info("Locate and Return Element by " + locatorType + ": " + locator );
 
         MobileElement element = null;
 
@@ -181,14 +169,11 @@ public class AppiumSession {
      */
     public List locateElements (String locatorType, String locator ) {
 
-        logger.info("Locate and Return List of Elements by " + locatorType + ": " + locator );
-
         List elements = null;
 
         try {
             elements = driver.findElements( locatorType, locator );
         } catch ( org.openqa.selenium.NoSuchElementException e ) {
-            logger.info("No matching elements found! ");
             e.printStackTrace();
         }
 
@@ -243,12 +228,8 @@ public class AppiumSession {
 
     public void initializeGestureEngine( ) {
 
-        logger.debug("Getting Device Height");
         deviceHeight = driver.manage().window().getSize().getHeight();
-        logger.debug("Device Height: " + deviceHeight );
-        logger.debug("Getting Device Width");
         deviceWidth = driver.manage().window().getSize().getWidth();
-        logger.debug("Device Width: " + deviceWidth );
 
         _initializeSwipeAnchors();
 
@@ -261,8 +242,6 @@ public class AppiumSession {
      */
     public void pressElement( MobileElement el ) {
 
-        logger.debug("Press Element: " + el.getId() );
-
         TouchAction action = new TouchAction( driver );
         action.press( ElementOption.element( el )).waitAction().release().perform();
     }
@@ -274,8 +253,6 @@ public class AppiumSession {
      * @param direction             Accepted values are "left", and "right"
      */
     public void horizontalSwipe( String direction ) {
-
-        logger.debug("Horizontal Swipe: " + direction );
 
         String xStartKey = "";
         String yStartKey = "";
@@ -317,8 +294,6 @@ public class AppiumSession {
      * @param direction                 Accepted values are "up", and "down"
      */
     public void verticalSwipe( String direction ) {
-
-        logger.debug("Vertical Swipe: " + direction );
 
         String xStartKey = "";
         String yStartKey = "";
