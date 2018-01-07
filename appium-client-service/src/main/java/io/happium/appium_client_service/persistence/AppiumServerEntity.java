@@ -104,8 +104,8 @@ public class AppiumServerEntity {
     @Override
     public String toString() {
         return String.format(
-                "AppiumServer[url='%s']",
-                url
+                "AppiumServer[id='%s', nickname='%s', url='%s']",
+                id, nickname, url
         );
     }
 
