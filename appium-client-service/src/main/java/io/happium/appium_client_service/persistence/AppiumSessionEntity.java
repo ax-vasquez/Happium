@@ -65,8 +65,11 @@ public class AppiumSessionEntity implements Serializable {
      */
     @Getter @Setter private Hashtable<String, Integer> swipeAnchors;
 
+    /**
+     * Reference to this Session's driver - NOT persisted to database (indicated by Transient annotation)
+     */
     @Transient
-    @Getter @Setter private AppiumDriver appiumDriver;      // Not persisted to database
+    @Getter @Setter private AppiumDriver appiumDriver;
 
     /**
      * AppiumSessionEntity constructor

@@ -1,71 +1,102 @@
 package io.happium.appium_client_service.appium;
 
-import com.google.gson.JsonObject;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
-import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.ElementOption;
 import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.By;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Component;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Set;
 
+/**
+ * Drives the simulated user interactions with a physical
+ * device in an Appium session.
+ */
 @Component
-public class AppiumSession {
+public class GestureDriver {
 
-    private DesiredCapabilities capabilities;
-    private String platform; // Currently not in use, but is necessary for adding iOS support later
+    /**
+     * X Axis swipe anchor labels
+     */
+    private final String X_ANCHOR_LEFT = "xLeft";
+    private final String X_ANCHOR_MID = "xMiddle";
+    private final String X_ANCHOR_RIGHT = "xRight";
+
+    /**
+     * Y Axis swipe anchor labels
+     */
+    private final String Y_ANCHOR_TOP = "yTop";
+    private final String Y_ANCHOR_MID = "yMiddle";
+    private final String Y_ANCHOR_BOTTOM = "yBottom";
+
+    /**
+     * Supported swipe directions
+     */
+    public enum SWIPE_DIRECTION {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    }
+
+    /**
+     * Local copy of AppiumDriver - enables device interaction
+     */
     private AppiumDriver driver;
 
-    // Device Details
-    private Integer deviceWidth;
-    private Integer deviceHeight;
+    /**
+     * Stores swipe anchor gesture points - used in composing gestures
+     */
     private Hashtable<String, Integer> swipeAnchors;
 
     /**
-     * Basic Constructor - creates empty capabilities object
+     * Constructor
+     *
+     * <p>
+     *     This class controls the interactions with a physical device used
+     *     in an Appium Session. This class only retains a local copy of the
+     *     AppiumDriver so that it may interact with the device in question.
+     *     The device height and width are used in calculating the swipe anchor
+     *     points.
+     * <p>
+     *     You can fine-tune the positioning of the swipe anchors by adjusting
+     *     the values of the divisors - these values "divide" the screen dimension
+     *     in question (height or width) by the provided divisor value. This is done
+     *     to ensure the swipe gestures are large enough to register on the device
+     *     properly.
+     * <p>
+     *     A good indication that these divisor values need to be changed is if
+     *     your swipe gestures are not able to trigger the desired intent - for
+     *     example, a common symptom of too-small divisors is when scrolling
+     *     horizontally in a paginated view - if too small, you will see the gesture
+     *     occur, but it won't swipe far enough and the current view will simply
+     *     shift back to the center without scrolling to the next view.
+     *
+     * @param driver
+     * @param deviceHeight
+     * @param deviceWidth
      */
-    public AppiumSession ( JsonObject capsObj ) {
-        capabilities = new DesiredCapabilities();
-        swipeAnchors = new Hashtable<>();
-        _initializeCapabilities( capsObj );
+    public GestureDriver( AppiumDriver driver, Integer deviceHeight, Integer deviceWidth ) {
+
+        this.driver = driver;
+        _initAnchors( deviceHeight, X_ANCHOR_LEFT, X_ANCHOR_MID, X_ANCHOR_RIGHT,  7 );
+        _initAnchors( deviceWidth, Y_ANCHOR_TOP, Y_ANCHOR_MID, Y_ANCHOR_BOTTOM, 5 );
+
     }
 
     /**
-     * Starts appium session based on the session's platform name (iOS or Android)
-     *
-     * @param serverUrl                 Address of appium server
-     */
-    public void startBaseAppiumSession( String serverUrl ) {
-
-        try {
-
-            driver = new AndroidDriver<MobileElement>( new URL( serverUrl ), capabilities);
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    /**
-     * Tells the server to wait for the existence of a given element. If timeout is met before element is found, error
-     * is generated. If waiting for Xpath, provide the complete relative path as the identifier
-     * (e.g. "//android.widget.TextView[@text='someLabelValue']" as the identifier)
+     * Tells the server to wait for the existence of a given element.
+     * If timeout is met before element is found, error is generated.
      *
      *
-     * @param findBy                    String for the identifier type; "id", "name", and "class_name" are supported
+     * @param findBy                    String for the identifier type
      * @param identifier                String of the element's identifier
      * @param timeoutInSeconds          Amount of time to wait for the element's existence
      */
@@ -94,27 +125,13 @@ public class AppiumSession {
     }
 
     /**
-     * Explicit wait - useful for loading time tolerance testing
-     *
-     * @param milliseconds              Amount of time to wait for
-     */
-    public void waitForDuration (Integer milliseconds) {
-
-        try {
-            Thread.sleep( milliseconds );
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Finds an element by a given (supported) locator type and value
      *
      * @param locatorType               Type of locator (e.g. id, className, etc...)
      * @param locator                   Value of identifier
      * @return                          Returns the found element
      */
-    public MobileElement locateElement ( String locatorType, String locator) {
+    public MobileElement locateElement (String locatorType, String locator) {
 
         MobileElement element = null;
 
@@ -148,26 +165,6 @@ public class AppiumSession {
     }
 
     /**
-     * Dismiss keyboard
-     */
-    public void dismissKeyboard() {
-        driver.hideKeyboard();
-    }
-
-    /**
-     * Uses the AppiumDriver to set up the requirements needed
-     * in order to execute device gestures
-     */
-    public void initializeGestureEngine( ) {
-
-        deviceHeight = driver.manage().window().getSize().getHeight();
-        deviceWidth = driver.manage().window().getSize().getWidth();
-
-        _initializeSwipeAnchors();
-
-    }
-
-    /**
      * Performs a press action in the center of the given element
      *
      * @param el                    MobileElement to press
@@ -179,27 +176,111 @@ public class AppiumSession {
     }
 
     /**
+     * Dismiss keyboard
+     */
+    public void dismissKeyboard() {
+
+        driver.hideKeyboard();
+
+    }
+
+    /**
+     * Initializes Axis coordinate anchors - used with X-Anchors to create gesture start and stop points.
+     */
+    private void _initAnchors(Integer metric, String minString, String midString, String maxString, Integer divisor) {
+        Integer min = _calculateMinAnchor( metric, divisor );
+        Integer mid = _calculateMidpoint( metric / 2 );
+        Integer max = _calculateMaxAnchor( metric, min );
+
+        _setAnchor( minString, min );
+        _setAnchor( midString, mid );
+        _setAnchor( maxString, max );
+    }
+
+    /**
+     * Calculates the midpoint of an anchor axis
+     *
+     * @param baseValue             Either the device width or height
+     * @return                      Returns midpoint value
+     */
+    private Integer _calculateMidpoint( Integer baseValue ) {
+
+        return (baseValue / 2);
+
+    }
+
+    /**
+     * Calculates the minimum coordinate value of an anchor axis
+     *
+     * @param baseValue             Either the device width or height
+     * @param divisor               Arbitrary value; controls how far in from device edge a gesture will start/stop
+     * @return                      Returns minimum coordinate value
+     */
+    private Integer _calculateMinAnchor( Integer baseValue, Integer divisor ) {
+
+        return (baseValue / divisor);
+
+    }
+
+    /**
+     * Calculates the maximum coordinate value of an anchor axis by subtracting the minimum anchor value from total
+     *
+     * @param baseValue             Either the device width or height
+     * @param minAnchor             Value of minimum anchor coordinate for given axis
+     * @return                      Returns maximum coordinate value
+     */
+    private Integer _calculateMaxAnchor( Integer baseValue, Integer minAnchor ) {
+
+        return (baseValue - minAnchor);
+
+    }
+
+    /**
+     * Utility method for setting anchor points; keeps code cleaner
+     *
+     * @param anchorKey             String of the key being stored
+     * @param anchorValue           Associated Integer value being stored
+     */
+    private void _setAnchor( String anchorKey, Integer anchorValue ) {
+
+        swipeAnchors.put(anchorKey, anchorValue);
+
+    }
+
+    /**
+     * Returns the associated value for the given key
+     *
+     * @param key                   Key of the the value to select
+     * @return                      associated value
+     */
+    private Integer _selectCoordinate ( String key ) {
+
+        return swipeAnchors.get(key);
+
+    }
+
+    /**
      * Performs swipe left or right (NOTE: Swiping in a direction moves the view in the opposite direction; e.g.
      * swipe-left scrolls the view right and vice versa)
      *
      * @param direction             Accepted values are "left", and "right"
      */
-    public void horizontalSwipe( String direction ) {
+    public void horizontalSwipe( SWIPE_DIRECTION direction ) {
 
         String xStartKey = "";
         String yStartKey = "";
         String shiftKey = "";
 
         switch (direction) {
-            case "left":
-                xStartKey = "xRight";
-                yStartKey = "yMid";
-                shiftKey = "xLeft";
+            case LEFT:
+                xStartKey = X_ANCHOR_RIGHT;
+                yStartKey = Y_ANCHOR_MID;
+                shiftKey = X_ANCHOR_LEFT;
                 break;
-            case "right":
-                xStartKey = "xLeft";
-                yStartKey = "yMid";
-                shiftKey = "xRight";
+            case RIGHT:
+                xStartKey = X_ANCHOR_LEFT;
+                yStartKey = Y_ANCHOR_MID;
+                shiftKey = X_ANCHOR_RIGHT;
                 break;
             default:
                 break;
@@ -225,22 +306,22 @@ public class AppiumSession {
      *
      * @param direction                 Accepted values are "up", and "down"
      */
-    public void verticalSwipe( String direction ) {
+    public void verticalSwipe( SWIPE_DIRECTION direction ) {
 
         String xStartKey = "";
         String yStartKey = "";
         String shiftKey = "";
 
         switch (direction) {
-            case "up":
-                xStartKey = "xMid";
-                yStartKey = "yBot";
-                shiftKey = "yTop";
+            case UP:
+                xStartKey = X_ANCHOR_MID;
+                yStartKey = Y_ANCHOR_BOTTOM;
+                shiftKey = Y_ANCHOR_TOP;
                 break;
-            case "down":
-                xStartKey = "xMid";
-                yStartKey = "yTop";
-                shiftKey = "yBot";
+            case DOWN:
+                xStartKey = X_ANCHOR_MID;
+                yStartKey = Y_ANCHOR_TOP;
+                shiftKey = Y_ANCHOR_BOTTOM;
                 break;
         }
 
@@ -255,100 +336,6 @@ public class AppiumSession {
                 .moveTo( PointOption.point( xStart, shift ) )
                 .release()
                 .perform();
-    }
-
-    /**
-     * Controlling helper method that is responsible for initializing
-     * the swipe points needed to execute gestures.
-     */
-    private void _initializeSwipeAnchors() {
-
-        _initAnchors( deviceHeight,"yTop", "yMid", "yBot", 7 );
-        _initAnchors( deviceWidth,"xLeft", "xMid", "xRight", 5 );
-
-    }
-
-    /**
-     * Initializes Axis coordinate anchors - used with X-Anchors to create gesture start and stop points.
-     */
-    private void _initAnchors(Integer metric, String minString, String midString, String maxString, Integer divisor) {
-        Integer min = _calculateMinAnchor( metric, divisor );
-        Integer mid = _calculateMidpoint( metric / 2 );
-        Integer max = _calculateMaxAnchor( metric, min );
-
-        _setAnchor( minString, min );
-        _setAnchor( midString, mid );
-        _setAnchor( maxString, max );
-    }
-
-    /**
-     * Calculates the midpoint of an anchor axis
-     *
-     * @param baseValue             Either the device width or height
-     * @return                      Returns midpoint value
-     */
-    private Integer _calculateMidpoint( Integer baseValue ) {
-        return (baseValue / 2);
-    }
-
-    /**
-     * Calculates the minimum coordinate value of an anchor axis
-     *
-     * @param baseValue             Either the device width or height
-     * @param divisor               Arbitrary value; controls how far in from device edge a gesture will start/stop
-     * @return                      Returns minimum coordinate value
-     */
-    private Integer _calculateMinAnchor( Integer baseValue, Integer divisor ) {
-        return (baseValue / divisor);
-    }
-
-    /**
-     * Calculates the maximum coordinate value of an anchor axis by subtracting the minimum anchor value from total
-     *
-     * @param baseValue             Either the device width or height
-     * @param minAnchor             Value of minimum anchor coordinate for given axis
-     * @return                      Returns maximum coordinate value
-     */
-    private Integer _calculateMaxAnchor( Integer baseValue, Integer minAnchor ) {
-        return (baseValue - minAnchor);
-    }
-
-    /**
-     * Utility method for setting anchor points; keeps code cleaner
-     *
-     * @param anchorKey             String of the key being stored
-     * @param anchorValue           Associated Integer value being stored
-     */
-    private void _setAnchor( String anchorKey, Integer anchorValue ) {
-        swipeAnchors.put(anchorKey, anchorValue);
-    }
-
-    /**
-     * Returns the associated value for the given key
-     *
-     * @param key                   Key of the the value to select
-     * @return                      associated value
-     */
-    private Integer _selectCoordinate ( String key ) {
-        return swipeAnchors.get(key);
-    }
-
-    private void _initializeCapabilities( JsonObject capsObj ) {
-
-        Set<String> keys = capsObj.keySet();
-
-        for ( String key : keys ) {
-
-            String valString = capsObj.get( key ).toString();
-            capabilities.setCapability( key, valString );
-
-            if ( key.equals( "platformName" ) ) {
-
-                platform = valString;
-            }
-
-        }
-
     }
 
 }

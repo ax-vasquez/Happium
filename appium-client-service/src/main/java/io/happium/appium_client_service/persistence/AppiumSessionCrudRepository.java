@@ -4,6 +4,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Data Access Object that interfaces with the AppiumSessionEntity
  * data table.
@@ -11,4 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface AppiumSessionCrudRepository extends CrudRepository<AppiumSessionEntity,Long> {
+
+    void delete(AppiumSessionEntity appiumSessionEntity);
+
+    List<AppiumSessionEntity> findAll();
+
+    @Override
+    <S extends AppiumSessionEntity> S save(S entity);
+
 }
