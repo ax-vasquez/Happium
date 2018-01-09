@@ -52,6 +52,11 @@ public class HappiumSession implements Serializable {
     @Getter @Setter private JsonObject payloadObject;
 
     /**
+     * Stores record of the URL the hosting server was started on
+     */
+    @Getter @Setter private String serverUrl;
+
+    /**
      * Appium session used to execute any specified test suites (requires
      * custom implementation)
      */

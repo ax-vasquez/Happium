@@ -1,5 +1,11 @@
 package io.happium.appium_client_service.service;
 
+import io.happium.appium_client_service.persistence.HappiumSessionCrudRepository;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 /**
  * Controlling Happium Service class
  *
@@ -10,7 +16,17 @@ package io.happium.appium_client_service.service;
  *     execute the test suites, and finally return a
  *     result.
  */
+@Service
 public class HappiumService {
+
+    @Getter @Setter private HappiumSessionCrudRepository happiumSessionCrudRepository;
+
+    @Autowired
+    public HappiumService( HappiumSessionCrudRepository happiumSessionCrudRepository ) {
+
+        this.happiumSessionCrudRepository = happiumSessionCrudRepository;
+
+    }
 
 
 
