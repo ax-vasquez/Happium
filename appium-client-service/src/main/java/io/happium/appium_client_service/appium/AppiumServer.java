@@ -5,13 +5,31 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Appium Server Entity representation class
+ * Appium Server Class
  *
  * <p>
- *     Stores information about an Appium server instance
- *     and stores that instance as an entity in the target
- *     database (database configured in DatabaseConfiguration class
- *     from the io.happium.appium_client_service.configuration.* package)
+ *     Servers are created as soon as Happium is aware
+ *     that a new server is needed. A new server is needed
+ *     when the ALL of the following criteria have been met
+ *     (NOTE: None of these criteria are handled by the
+ *     AppiumServer class - these are just the milestones
+ *     that have to happen before a new server can be created):
+ *
+ *     1). A new payload has been received
+ *     2). That payload has been validated
+ *     3). The target device's "inUse" status is FALSE
+ *     4). Happium can interpret any custom test instruction code
+ *
+ * <p>
+ *     After the above four requirements are met, Happium
+ *     will then instantiate a new server at the indicated
+ *     URL (on any free port to avoid port conflicts - it's
+ *     best not to change this as you'll need to implement
+ *     custom code to avoid such conflicts). The server is spun
+ *     up in an asynchronous thread that is kept alive until
+ *     the Appium Session has completed. Once all results have
+ *     been generated and returned, the server instance is
+ *     torn down.
  */
 public class AppiumServer {
 

@@ -38,8 +38,19 @@ public class AppiumSession {
      */
     @Getter @Setter private DesiredCapabilities desiredCapabilities;
 
+    /**
+     * Reference to hosting Appium Server - used to modify the type of OS
+     * this session will support via the setDriverAsAndroidDriver() and
+     * setDriverAsIosDriver() methods. This is part of what enables this
+     * class implementation to be platform-independent
+     */
     @Getter @Setter private AppiumServer appiumServer;
 
+    /**
+     * Base Appium driver for this session - this will be instantiated
+     * as either an iOS or Android-specific driver (the OS-specific
+     * implementations extend the functionality of the base driver)
+     */
     @Getter @Setter private AppiumDriver driver;
 
     /**
