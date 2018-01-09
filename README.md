@@ -22,7 +22,7 @@ To get the most out of Happium, you should be familiar with the concepts employe
      - `spring-boot-starter-thymeleaf`
      - `spring-boot-starter-jpa`
   3. [Spring Cloud](https://github.com/spring-cloud/spring-cloud-commons)
-     - `spring-cloud-netflix-eureka-server` (only need the `eureka-server` dependency since Happium uses the Spring cloud [`DiscoveryClient`](http://static.javadoc.io/org.springframework.cloud/spring-cloud-commons-parent/1.1.4.RELEASE/org/springframework/cloud/client/discovery/DiscoveryClient.html))
+     - `spring-cloud-netflix-eureka-server` (you don't need the `eureka-client` dependency since Happium uses the Spring cloud [`DiscoveryClient`](http://static.javadoc.io/org.springframework.cloud/spring-cloud-commons-parent/1.1.4.RELEASE/org/springframework/cloud/client/discovery/DiscoveryClient.html))
   4. [ADB](https://developer.android.com/studio/command-line/adb.html)
      - Don't worry about referring to the [`Jadb`](https://github.com/vidstige/jadb) documentation - there really isn't much to go off of there, so I will provide documentation in the wiki for this later - just know basic ADB functionality
   5. Familiarity with Appium's [`DesiredCapabilities`](https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md)
