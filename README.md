@@ -13,15 +13,15 @@ When setting up Happium, it's assumed that you know how to do the following:
 
 ### Usage
 To get the most out of Happium, you should be familiar with the concepts employed in it:
-  1. Spring Framework
+  1. [Spring Framework](https://spring.io/)
      - [Dependency Injection](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#beans-introduction)
      - [Annotation Configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-configuration-classes.html)
      - [Autowiring](http://www.baeldung.com/spring-autowire)
-  2. Spring Boot
+  2. [Spring Boot](https://github.com/spring-projects/spring-boot)
      - `spring-boot-starter-web`
      - `spring-boot-starter-thymeleaf`
      - `spring-boot-starter-jpa`
-  3. Spring Cloud
+  3. [Spring Cloud](https://github.com/spring-cloud/spring-cloud-commons)
      - `spring-cloud-netflix-eureka-server` (only need the `eureka-server` dependency since Happium uses the Spring cloud [`DiscoveryClient`](http://static.javadoc.io/org.springframework.cloud/spring-cloud-commons-parent/1.1.4.RELEASE/org/springframework/cloud/client/discovery/DiscoveryClient.html))
   4. [ADB](https://developer.android.com/studio/command-line/adb.html)
      - Don't worry about referring to the `Jadb` documentation - there really isn't much to go off of there, so I will provide documentation in the wiki for this later - just know basic ADB functionality
