@@ -7,8 +7,8 @@ concepts employed in Happium (as well as concepts you should know when it comes 
 
 ### Setup
 When setting up Happium, it's assumed that you know how to do the following:
-   1. Set System PATH variables ([Windows](https://www.computerhope.com/issues/ch000549.htm) | [Unix](https://stackoverflow.com/questions/14637979/how-to-permanently-set-path-on-linux-unix)
-   2. Know how to configure Android Devices for use with ADB ([Enable USB Debugging on Android Device](https://developer.android.com/studio/command-line/adb.html#Enabling)
+   1. Set System PATH variables ([Windows](https://www.computerhope.com/issues/ch000549.htm) | [Unix](https://stackoverflow.com/questions/14637979/how-to-permanently-set-path-on-linux-unix) )
+   2. Know how to configure Android Devices for use with ADB ([Enable USB Debugging on Android Device](https://developer.android.com/studio/command-line/adb.html#Enabling) )
    3. Know how to use [Appium Doctor](https://github.com/appium/appium-doctor) - Makes setting up Appium installation much easier
 
 ### Usage
@@ -22,7 +22,7 @@ To get the most out of Happium, you should be familiar with the concepts employe
      - `spring-boot-starter-thymeleaf`
      - `spring-boot-starter-jpa`
   3. Spring Cloud
-     - `spring-cloud-netflix-eureka-server` (only need the `-server` dependency since this uses the Spring cloud `DiscoveryClient`)
+     - `spring-cloud-netflix-eureka-server` (only need the `eureka-server` dependency since Happium uses the Spring cloud `DiscoveryClient`)
   4. [ADB](https://developer.android.com/studio/command-line/adb.html)
      - Don't worry about referring to the `Jadb` documentation - there really isn't much to go off of there, so I will provide documentation in the wiki for this later - just know basic ADB functionality
   5. Familiarity with Appium's [`DesiredCapabilities`](https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md)
