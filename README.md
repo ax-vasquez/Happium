@@ -1,7 +1,7 @@
 # Happium
 Appium Automation Spring Microservice platform
 
-## Assumed Knowledge
+## Assumed Knowledge (Click Links to Learn More)
 In order to make the most use out of this documentation, I have provided a list of concepts you should be familiar with. These are the
 concepts employed in Happium (as well as concepts you should know when it comes to configuring your environment for Happium):
 
