@@ -7,8 +7,8 @@ concepts employed in Happium (as well as concepts you should know when it comes 
 
 ### Setup
 When setting up Happium, it's assumed that you know how to do the following:
-   1. Set System PATH variables ([Windows](https://www.computerhope.com/issues/ch000549.htm) | [Unix](https://stackoverflow.com/questions/14637979/how-to-permanently-set-path-on-linux-unix) )
-   2. Know how to configure Android Devices for use with ADB ([Enable USB Debugging on Android Device](https://developer.android.com/studio/command-line/adb.html#Enabling) )
+   1. Set System PATH variables ( [Windows](https://www.computerhope.com/issues/ch000549.htm) | [Unix](https://stackoverflow.com/questions/14637979/how-to-permanently-set-path-on-linux-unix) )
+   2. Know how to configure Android Devices for use with ADB ( [Enable USB Debugging on Android Device](https://developer.android.com/studio/command-line/adb.html#Enabling) )
    3. Know how to use [Appium Doctor](https://github.com/appium/appium-doctor) - Makes setting up Appium installation much easier
 
 ### Usage
