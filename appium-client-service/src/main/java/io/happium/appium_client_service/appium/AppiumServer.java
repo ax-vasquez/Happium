@@ -1,11 +1,8 @@
-package io.happium.appium_client_service.persistence;
+package io.happium.appium_client_service.appium;
 
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.persistence.*;
 
 /**
  * Appium Server Entity representation class
@@ -16,20 +13,7 @@ import javax.persistence.*;
  *     database (database configured in DatabaseConfiguration class
  *     from the io.happium.appium_client_service.configuration.* package)
  */
-@Entity
-public class AppiumServerEntity {
-
-    /**
-     * Auto-generated server ID
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter @Setter Long id;
-
-    /**
-     * Easy-to-remember reference to this server
-     */
-    @Getter @Setter String nickname;
+public class AppiumServer {
 
     /**
      * Fully-qualified URL of server as a string
@@ -39,7 +23,6 @@ public class AppiumServerEntity {
     /**
      * Represents Appium Server
      */
-    @Transient
     @Getter @Setter private AppiumDriverLocalService appiumDriverLocalService;  // Not persisted to table
 
     /**
@@ -52,11 +35,9 @@ public class AppiumServerEntity {
      *
      * @param appiumDriverLocalService          initialized server instance
      */
-    @Autowired
-    public AppiumServerEntity( AppiumDriverLocalService appiumDriverLocalService, String nickname ) {
+    public AppiumServer(AppiumDriverLocalService appiumDriverLocalService ) {
 
         this.url = appiumDriverLocalService.getUrl().toString();
-        this.nickname = nickname;
 
     }
 
@@ -104,8 +85,8 @@ public class AppiumServerEntity {
     @Override
     public String toString() {
         return String.format(
-                "AppiumServer[id='%s', nickname='%s', url='%s']",
-                id, nickname, url
+                "AppiumServer[url='%s']",
+                url
         );
     }
 

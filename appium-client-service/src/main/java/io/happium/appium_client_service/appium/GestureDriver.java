@@ -9,7 +9,6 @@ import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.Hashtable;
@@ -19,7 +18,6 @@ import java.util.List;
  * Drives the simulated user interactions with a physical
  * device in an Appium session.
  */
-@Component
 public class GestureDriver {
 
     /**
