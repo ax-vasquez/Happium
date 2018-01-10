@@ -12,6 +12,9 @@ import java.util.List;
 @RestController
 public class SupportedDesiredCapabilitiesRestController {
 
+    /**
+     * Enables interacting with the supporting CRUDRepository
+     */
     private SupportedDesiredCapabilityService supportedDesiredCapabilityService;
 
     @Autowired
@@ -21,10 +24,15 @@ public class SupportedDesiredCapabilitiesRestController {
 
     }
 
+    /**
+     * RESTful endpoint to access the stored supported capabilities
+     *
+     * @return
+     */
     @RequestMapping(value = "/supported_capabilities", method = RequestMethod.GET, produces = "application/json")
     public List<SupportedDesiredCapability> getAllSupportedCapabilities() {
 
-        return null;    // FIX ME, YA DERPO
+        return supportedDesiredCapabilityService.getSupportedCapabilities();
 
     }
 

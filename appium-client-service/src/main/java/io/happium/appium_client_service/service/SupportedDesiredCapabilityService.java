@@ -42,6 +42,12 @@ public class SupportedDesiredCapabilityService {
 
     }
 
+    public List<SupportedDesiredCapability> getSupportedCapabilities() {
+
+        return (List<SupportedDesiredCapability>) supportedDesiredCapabilityCrudRepository.findAll();
+
+    }
+
     /**
      * Main initializer helper method that drives the instantiation of all capabilities
      * specified in resources/supported_desired_capabilities.json
@@ -112,7 +118,5 @@ public class SupportedDesiredCapabilityService {
         }
 
     }
-
-
 
 }
