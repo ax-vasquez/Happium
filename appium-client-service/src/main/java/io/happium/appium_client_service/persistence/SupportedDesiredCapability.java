@@ -78,4 +78,10 @@ public class SupportedDesiredCapability {
     @Column(name = "happium_tips")
     @Getter @Setter private List<String> happiumTips;
 
+    /**
+     * Indicates which capabilities this capability does not work with
+     */
+    @Column(name = "incompatible_capabilities")
+    @Getter @Setter private List<String> incompatibleCapabilities;
+
 }
