@@ -35,13 +35,31 @@ public class SupportedDesiredCapabilityService {
      */
     @Getter @Setter private SupportedDesiredCapabilityCrudRepository supportedDesiredCapabilityCrudRepository;
 
+    /**
+     * Autowired constructor that initializes the CRUDRepository and loads in the
+     * built-in SupportedDesiredCapability configuration JSON file
+     *
+     * @param supportedDesiredCapabilityCrudRepository          Repository to enable interacting with the SupportedCapability table
+     */
     @Autowired
     public SupportedDesiredCapabilityService( SupportedDesiredCapabilityCrudRepository supportedDesiredCapabilityCrudRepository ) {
 
         this.supportedDesiredCapabilityCrudRepository = supportedDesiredCapabilityCrudRepository;
 
+        // Loads built-in supported DesiredCapabilities
+        try {
+            _initializeSupportedCapabilityTable();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
+    /**
+     * Utility method to retrieve all stored SupportedCapability objects
+     *
+     * @return          List of all SupportedCapability objects
+     */
     public List<SupportedDesiredCapability> getSupportedCapabilities() {
 
         return (List<SupportedDesiredCapability>) supportedDesiredCapabilityCrudRepository.findAll();
@@ -96,24 +114,10 @@ public class SupportedDesiredCapabilityService {
 
             // Nested JsonArray Attributes
             JsonArray alternativeOptionsObject = capabilityValueAsJsonObject.getJsonArray("alternative_options");
-            JsonArray alternativeCapabilitiesObject = capabilityValueAsJsonObject.getJsonArray("depends_on");
+            JsonArray alternativeCapabilitiesObject = capabilityValueAsJsonObject.getJsonArray("dependent_capabilities");
             JsonArray tips = capabilityValueAsJsonObject.getJsonArray("usage_tips");
 
-            SupportedDesiredCapability newCapability = new SupportedDesiredCapability( name, isRequired, description, platform, validOptionsObject, tips );
-
-            if ( alternativeOptionsObject != null ) {
-
-                newCapability.setAlternativeOptions( alternativeOptionsObject );
-
-            }
-
-            if ( alternativeCapabilitiesObject != null ) {
-
-                newCapability.setAlternativeOptions( alternativeOptionsObject );
-
-            }
-
-            supportedDesiredCapabilityCrudRepository.save( newCapability );
+//            supportedDesiredCapabilityCrudRepository.save( newCapability );
 
         }
 
