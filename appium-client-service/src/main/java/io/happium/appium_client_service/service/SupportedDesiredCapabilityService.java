@@ -41,6 +41,15 @@ public class SupportedDesiredCapabilityService {
         }
     }
 
+    private enum ALT_CAP_CATEGORY {
+        ALT_CAP_IOS("ios"),
+        ALT_CAP_ANDROID("android"),
+        ALT_CAP_GLOBAL("global");
+
+        ALT_CAP_CATEGORY(String category) {
+        }
+    }
+
     /**
      * Enables interaction with the supported capability data table
      */
@@ -160,7 +169,7 @@ public class SupportedDesiredCapabilityService {
 
 
         JsonNode alternateCapsBaseObject = sourceObject.get( CAPABILITY_ATTRIBUTE.CAP_ALT_CAPS
-                .toString() );
+                .toString());
 
         JsonNode iosAltCaps = alternateCapsBaseObject.get("ios");
         newCapability.setAltIOSCapabilities( _generateArrayFromJsonNode( iosAltCaps ) );
@@ -218,17 +227,29 @@ public class SupportedDesiredCapabilityService {
 
             case CAP_ALT_CAPS:
 
-
+                newCapability = _configureAlternativeCapsBlock( targetAttributeObject, newCapability );
                 break;
 
-
             case CAP_DEP_CAPS:
+
+                String [] dependentCapsArray = _generateArrayFromJsonNode( targetAttributeObject );
+                newCapability.setDependentCapabilities( dependentCapsArray );
+
                 break;
 
         }
 
+        return newCapability;
+
     }
 
+    /**
+     * Helper method to configure the type of values this Desired Capability should take
+     *
+     * @param sourceObject              source Accepted Values JSON Node
+     * @param newCapability             Capability to configure accepted values for
+     * @return                          Modified version of passed-in capability with configured accepted values
+     */
     private SupportedDesiredCapability _configureAcceptedValueTypeBlock( JsonNode sourceObject, SupportedDesiredCapability newCapability ) {
 
         JsonNode acceptedValuesObject = sourceObject.get("accepted_values");
@@ -246,7 +267,46 @@ public class SupportedDesiredCapabilityService {
 
     }
 
+    /**
+     * Helper method to configure the possible alternate capabilities that
+     * can be used instead of this capability. There are three arrays nested
+     * inside this object, one for each capability platform (e.g. "ios", "android"
+     * and "global")
+     *
+     * @param sourceObject                  AcceptedValue JsonNode block
+     * @param newCapability                 Capability to configure
+     * @return                              Capability with all alternate capabilities initialized
+     */
     private SupportedDesiredCapability _configureAlternativeCapsBlock( JsonNode sourceObject, SupportedDesiredCapability newCapability ) {
+
+        final String [] ALT_CAPS_CATEGORIES = {"ios", "android", "global"};
+
+        for ( String category : ALT_CAPS_CATEGORIES ) {     // Iterate possible alt-caps categories
+
+            JsonNode categoryListObject = sourceObject.get( category );
+            String [] altCapListForCategory = _generateArrayFromJsonNode( categoryListObject );
+
+            if ( category.equals( ALT_CAP_CATEGORY.ALT_CAP_IOS.toString() ) ) {
+
+                newCapability.setAltIOSCapabilities( altCapListForCategory );
+
+            }
+
+            if ( category.equals( ALT_CAP_CATEGORY.ALT_CAP_ANDROID.toString() ) ) {
+
+                newCapability.setAltAndroidCapabilities( altCapListForCategory );
+
+            }
+
+            if ( category.equals( ALT_CAP_CATEGORY.ALT_CAP_GLOBAL.toString() ) ) {
+
+                newCapability.setAltGlobalCapabilities( altCapListForCategory );
+
+            }
+
+        }
+
+        return newCapability;
 
     }
 
