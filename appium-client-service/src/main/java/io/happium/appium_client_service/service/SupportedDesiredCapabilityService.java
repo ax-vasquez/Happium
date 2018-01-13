@@ -1,16 +1,17 @@
 package io.happium.appium_client_service.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.happium.appium_client_service.persistence.SupportedDesiredCapability;
 import io.happium.appium_client_service.persistence.SupportedDesiredCapabilityCrudRepository;
+import io.happium.appium_client_service.util.CapabilityParser;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.json.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -26,9 +27,19 @@ import java.util.List;
 @Service
 public class SupportedDesiredCapabilityService {
 
-    private static String GLOBAL_CAPABILITIES = "global";
-    private static String ANDROID_CAPABILITIES = "android";
-    private static String IOS_CAPABILITIES = "ios";
+    private enum CAPABILITY_ATTRIBUTE {
+        CAP_NAME("capability_name"),
+        CAP_PLATFORM("supported_platform"),
+        CAP_IS_REQUIRED("required_capability"),
+        CAP_DESCRIPTION("description"),
+        CAP_ACC_VALUES("accepted_values"),
+        CAP_TIPS("usage_tips"),
+        CAP_ALT_CAPS("alternate_capabilities"),
+        CAP_DEP_CAPS("dependent_capabilities");
+
+        CAPABILITY_ATTRIBUTE(String attributeLabel) {
+        }
+    }
 
     /**
      * Enables interaction with the supported capability data table
@@ -46,13 +57,6 @@ public class SupportedDesiredCapabilityService {
 
         this.supportedDesiredCapabilityCrudRepository = supportedDesiredCapabilityCrudRepository;
 
-        // Loads built-in supported DesiredCapabilities
-        try {
-            _initializeSupportedCapabilityTable();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
     }
 
     /**
@@ -69,57 +73,202 @@ public class SupportedDesiredCapabilityService {
     /**
      * Main initializer helper method that drives the instantiation of all capabilities
      * specified in resources/supported_desired_capabilities.json
-     *
-     * @throws FileNotFoundException            If file cannot be found
      */
-    private void _initializeSupportedCapabilityTable() throws FileNotFoundException {
+    public void initializeSupportedCapabilityTable() {
 
-        InputStream fileInput = new FileInputStream( "supported_desired_capabilities.json" );
-        JsonReader jsonReader = Json.createReader( fileInput );
-        JsonObject supportedCapabilityConfiguration = jsonReader.readObject();  // Returns entire file contents
+        try {
+            String supportedCapabilityJsonString = _generateFileString( "src/main/resources/supported_desired_capabilities.json" );
 
-        // Supported global capabilities configuration
-        JsonArray globalCapabilities = supportedCapabilityConfiguration.getJsonArray( GLOBAL_CAPABILITIES );
-        _initializeCapabilitySubcategory( globalCapabilities, GLOBAL_CAPABILITIES );
+            CapabilityParser capParser = new CapabilityParser();
+            List<Object> nestedObjects = capParser.parseList( supportedCapabilityJsonString );
 
-        // Supported Android capabilities configuration
-        JsonArray androidCapabilities = supportedCapabilityConfiguration.getJsonArray( ANDROID_CAPABILITIES );
-        _initializeCapabilitySubcategory( androidCapabilities, ANDROID_CAPABILITIES );
+            for ( Object nestedObject : nestedObjects ) {
 
-        // Supported iOS capabilities configuration
-        JsonArray iosCapabilities = supportedCapabilityConfiguration.getJsonArray( IOS_CAPABILITIES );
-        _initializeCapabilitySubcategory( iosCapabilities, IOS_CAPABILITIES );
+                JsonNode objectAsJsonNode = (JsonNode) nestedObject;    // Cast to JsonNode
+                SupportedDesiredCapability builtInSupportedCap = _generateSupportedCapabilityFromJsonNode( objectAsJsonNode );
+                supportedDesiredCapabilityCrudRepository.save( builtInSupportedCap );
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
     /**
-     * Helper method to fully-initialize a Desired Capability
+     * Helper method to load a file as a string
      *
-     * @param capabilitySubcategory         e.g. "global", "android" or "ios"
+     * <p>
+     *     This is used to convert the built in supported
+     *     capabilities configuration file from a JSON
+     *     object to a string representation of the JSON.
+     *     This is required since the built in JSON-parsing
+     *     mechanisms take strings as argument.
+     *
+     * @param fileLocation          Location of file to convert
+     * @return                      String representation of file contents
+     * @throws IOException          If file is not found, or if unable to read from file
      */
-    private void _initializeCapabilitySubcategory( JsonArray capabilitySubcategory, String platform ) {
+    private String _generateFileString( String fileLocation ) throws IOException {
 
-        for ( JsonValue capability : capabilitySubcategory ) {
+        InputStream fileInput = new FileInputStream( fileLocation );
+        BufferedReader reader = new BufferedReader( new InputStreamReader( fileInput ) );
 
-            JsonObject capabilityValueAsJsonObject = (JsonObject) capability;
+        String line = reader.readLine();
+        StringBuilder builder = new StringBuilder();
 
-            // Simple Attributes
-            String name = capabilityValueAsJsonObject.getString("name");
-            boolean isRequired = capabilityValueAsJsonObject.getBoolean("required");
+        while( line != null ) {
 
-            String description = capabilityValueAsJsonObject.getString("appium_description");
-
-            // Nested JsonObject Attributes
-            JsonObject validOptionsObject = capabilityValueAsJsonObject.getJsonObject("valid_options");
-
-            // Nested JsonArray Attributes
-            JsonArray alternativeOptionsObject = capabilityValueAsJsonObject.getJsonArray("alternative_options");
-            JsonArray alternativeCapabilitiesObject = capabilityValueAsJsonObject.getJsonArray("dependent_capabilities");
-            JsonArray tips = capabilityValueAsJsonObject.getJsonArray("usage_tips");
-
-//            supportedDesiredCapabilityCrudRepository.save( newCapability );
+            builder.append( line ).append("\n");
+            line = reader.readLine();
 
         }
+
+        return builder.toString();
+
+    }
+
+    /**
+     * Takes a JsonNode containing a complete JSON configuration object
+     * that is used to create a new SupportedDesiredCapability
+     *
+     * @param sourceObject              Source JsonNode to initialize new capability with
+     * @return                          Newly-created SupportedDesiredCapability object
+     */
+    private SupportedDesiredCapability _generateSupportedCapabilityFromJsonNode( JsonNode sourceObject ) {
+
+        String name = sourceObject.get( CAPABILITY_ATTRIBUTE.CAP_NAME
+                .toString() ).textValue();
+        String supportedPlatform = sourceObject.get( CAPABILITY_ATTRIBUTE.CAP_PLATFORM
+                .toString() ).textValue();
+        boolean isRequired = sourceObject.get( CAPABILITY_ATTRIBUTE.CAP_IS_REQUIRED
+                .toString() ).booleanValue();
+        String description = sourceObject.get( CAPABILITY_ATTRIBUTE.CAP_DESCRIPTION
+                .toString() ).textValue();
+
+        SupportedDesiredCapability newCapability = new SupportedDesiredCapability();
+
+        newCapability = _configureAcceptedValueTypeBlock( sourceObject, newCapability );
+
+        JsonNode usageTipsObject = sourceObject.get( CAPABILITY_ATTRIBUTE.CAP_TIPS
+                .toString() );
+
+        if (!usageTipsObject.isNull()) {
+            newCapability.setUsageTips( _generateArrayFromJsonNode( usageTipsObject ) );
+        }
+
+
+        JsonNode alternateCapsBaseObject = sourceObject.get( CAPABILITY_ATTRIBUTE.CAP_ALT_CAPS
+                .toString() );
+
+        JsonNode iosAltCaps = alternateCapsBaseObject.get("ios");
+        newCapability.setAltIOSCapabilities( _generateArrayFromJsonNode( iosAltCaps ) );
+
+        JsonNode androidAltCaps = alternateCapsBaseObject.get("android");
+        newCapability.setAltIOSCapabilities( _generateArrayFromJsonNode( androidAltCaps ) );
+
+        JsonNode globalAltCaps = alternateCapsBaseObject.get("global");
+        newCapability.setAltIOSCapabilities( _generateArrayFromJsonNode( globalAltCaps ) );
+
+        JsonNode dependentCapabilities = sourceObject.get("dependent_capabilities");
+        newCapability.setDependentCapabilities( _generateArrayFromJsonNode( dependentCapabilities ) );
+
+        return newCapability;
+
+    }
+
+    private SupportedDesiredCapability _configureTargetAttribute(
+            JsonNode sourceObject, SupportedDesiredCapability newCapability, CAPABILITY_ATTRIBUTE targetAttribute ) {
+
+        JsonNode targetAttributeObject = sourceObject.get( targetAttribute.toString() );
+
+        switch ( targetAttribute ) {
+
+            case CAP_NAME:
+
+                newCapability.setName( targetAttributeObject.textValue() );
+                break;
+
+            case CAP_PLATFORM:
+
+                newCapability.setSupportedPlatform( targetAttributeObject.textValue() );
+                break;
+
+            case CAP_IS_REQUIRED:
+
+                newCapability.setRequired( targetAttributeObject.booleanValue() );
+                break;
+
+            case CAP_DESCRIPTION:
+
+                newCapability.setDescription( targetAttributeObject.textValue() );
+                break;
+
+            case CAP_ACC_VALUES:
+
+                newCapability = _configureAcceptedValueTypeBlock( sourceObject, newCapability );
+                break;
+
+            case CAP_TIPS:
+
+                String [] tipArray = _generateArrayFromJsonNode( targetAttributeObject );
+                newCapability.setUsageTips( tipArray );
+                break;
+
+            case CAP_ALT_CAPS:
+
+
+                break;
+
+
+            case CAP_DEP_CAPS:
+                break;
+
+        }
+
+    }
+
+    private SupportedDesiredCapability _configureAcceptedValueTypeBlock( JsonNode sourceObject, SupportedDesiredCapability newCapability ) {
+
+        JsonNode acceptedValuesObject = sourceObject.get("accepted_values");
+        String acceptedValueType = acceptedValuesObject.get("type").textValue();
+        newCapability.setAcceptedValueType( acceptedValueType );
+
+        if ( acceptedValueType.equals("list_option") ) {
+
+            JsonNode validOptions = acceptedValuesObject.get("list_options");
+            newCapability.setAcceptedValuesList( _generateArrayFromJsonNode( validOptions ) );
+
+        }
+
+        return newCapability;
+
+    }
+
+    private SupportedDesiredCapability _configureAlternativeCapsBlock( JsonNode sourceObject, SupportedDesiredCapability newCapability ) {
+
+    }
+
+    /**
+     * Converts a given JsonNode into a String Array
+     *
+     * @param arrayObject           JsonNode to convert
+     * @return                      String array representation of JsonNode
+     */
+    private String [] _generateArrayFromJsonNode ( JsonNode arrayObject ) {
+
+        Iterator<JsonNode> iterator = arrayObject.elements();
+        List<String> options = new ArrayList<>();
+
+        while ( iterator.hasNext() ) {
+
+            String option = String.valueOf( iterator.next() );
+            options.add( option );
+
+        }
+
+        return (String[]) options.toArray();
 
     }
 

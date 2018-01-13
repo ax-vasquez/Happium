@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 @RestController
@@ -30,9 +31,16 @@ public class SupportedDesiredCapabilitiesRestController {
      * @return
      */
     @RequestMapping(value = "/supported_capabilities", method = RequestMethod.GET, produces = "application/json")
-    public List<SupportedDesiredCapability> getAllSupportedCapabilities() {
+    public SupportedDesiredCapability[] getAllSupportedCapabilities() {
 
-        return supportedDesiredCapabilityService.getSupportedCapabilities();
+        // Check if table is empty
+        if ( supportedDesiredCapabilityService.getSupportedCapabilities().isEmpty() ) {
+
+            this.supportedDesiredCapabilityService.initializeSupportedCapabilityTable();
+
+        }
+
+        return (SupportedDesiredCapability[]) supportedDesiredCapabilityService.getSupportedCapabilities().toArray();
 
     }
 

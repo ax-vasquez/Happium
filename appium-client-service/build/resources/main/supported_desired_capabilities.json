@@ -1,149 +1,250 @@
 {
-  "supported_desired_capabilities" : {
-
-
-    "global": [
-
-      {
-        "name": "platformName",
-        "required": true,
-        "appium_description": "Which mobile OS platform to use",
-        "valid_options": {
-          "value_type": "list_option",
-          "list_options": ["iOS", "Android", "FirefoxOS"]
-        },
-        "usage_tips": [
-          "Happium only supports iOS and Android - FirefoxOS is only technically supported since appium allows it"
+  "supported_desired_capabilities" : [
+    {
+      "capability_name": "platformName",
+      "supported_platform" : "global",
+      "required_capability": true,
+      "description": "Which mobile OS platform to use",
+      "accepted_values" : {
+        "type": "list_option",
+        "list_options": ["iOS", "Android", "FirefoxOS"]
+      },
+      "usage_tips": [
+        "Happium only supports iOS and Android - FirefoxOS is only technically supported since appium allows it"
+      ],
+      "alternate_capabilities": {
+        "ios": [
+          ""
+        ],
+        "android": [
+          ""
+        ],
+        "global" : [
+          ""
         ]
       },
-      {
-        "name": "deviceName",
-        "required": true,
-        "appium_description": "The kind of mobile device or emulator to use",
-        "valid_options": {
-          "value_type": "string",
-          "ios_value_tip": "Any of the devices returned by instruments with 'instruments -s devices'",
-          "android_value_tip": "Exact value is currently ignored - the only requirement is that this capability exists"
-        },
-        "usage_tips": [
-          "You can technically put whatever value you want in as the value for Android, though this may not be useful",
-          "By default, Happium sets this value to the value from the device property 'ro.product.model'"
+      "dependent_capabilities": [
+        ""
+      ]
+    },
+    {
+      "capability_name": "deviceName",
+      "supported_platform" : "global",
+      "required_capability": true,
+      "description": "The kind of mobile device or emulator to use",
+      "accepted_values" : {
+        "type": "string"
+      },
+      "usage_tips": [
+        "(iOS) Valid values are any of the devices returned by instruments with 'instruments -s devices'",
+        "(Android) The exact value is currently ignored - the only requirement is that this capability exists with some value",
+        "(Android) You can technically put whatever value you want in as the value, though this may not be useful",
+        "(Android) By default, Happium sets this value to the value from the device property 'ro.product.model'"
+      ],
+      "alternate_capabilities": {
+        "ios": [
+          ""
+        ],
+        "android": [
+          ""
+        ],
+        "global" : [
+          ""
         ]
       },
-      {
-        "name": "app",
-        "required": true,
-        "appium_description": "The absolute local path or remote http URL to an .ipa or .apk file, or a .zip containing one of these. Appium will attempt to install this app binary on the appropriate device first.",
-        "valid_options":{
-          "value_type": "url",
-          "value_tip": "Absolute local path or remote HTTP URL to an .ipa, .apk, or a .zip container"
-        },
-        "usage_tips": [
-          "If you have a remote build server, all you need to provide is the URL to the location of the build",
-          "In Android Appium sessions, you can set 'appPackage' and 'appActivity' INSTEAD of 'app'",
-          "In iOS Appium sessions, you can set 'bundleId' instead of 'app'"
-        ],
-        "alternative_options" : [
-          [
-            "bundleId"
-          ],
-          [
-            "appActivity",
-            "appPackage"
-          ]
-        ]
+      "dependent_capabilities": [
+        ""
+      ]
+    },
+    {
+      "capability_name": "app",
+      "supported_platform" : "global",
+      "required_capability": true,
+      "description": "The absolute local path or remote http URL to an .ipa or .apk file, or a .zip containing one of these. Appium will attempt to install this app binary on the appropriate device first.",
+      "accepted_values" : {
+        "type": "url"
       },
-      {
-        "name": "udid",
-        "required": true,
-        "appium_description": "Unique device identifier of the connected physical device",
-        "valid_options": {
-          "value_type": "string",
-          "ios_value_tip": "The device's UDID (you can find this using iTunes with the device connected)",
-          "android_value_tip": "The value for the device property, 'ro.product.serialno'"
-        },
-        "usage_tips": [
-          "Though it's not clear from the Appium documentation, for Android, UDID is also the serial number returned from the command 'adb devices'",
-          "Even though 'udid' is a required capability, it is only required for real device testing, which Happium employs exclusively"
-        ]
-      }
-    ],
-    "android": [
-      {
-        "name": "appActivity",
-        "required": false,
-        "appium_description": "Activity name for the Android activity you want to launch from your package. This often needs to be preceded by a '.' (e.g., .MainActivity instead of MainActivity)",
-        "valid_options": {
-          "value_type": "string",
-          "value_tip":"e.g. 'MainActivity' or '.Settings'"
-        },
-        "usage_tips": [
-          "It's most useful to set this to the name of the activity that runs on startup",
-          "This capability (along with 'appPackage') IS required if you are not using the 'app' capability",
-          "'appActivity' does not work by itself - you must also specify 'appPackage' to use it"
+      "usage_tips": [
+        "If you have a remote build server, all you need to provide is the URL to the location of the build",
+        "In Android Appium sessions, you can set 'appPackage' and 'appActivity' INSTEAD of 'app'",
+        "In iOS Appium sessions, you can set 'bundleId' instead of 'app'"
+      ],
+      "alternate_capabilities": {
+        "ios": [
+          "bundleId"
         ],
-        "alternative_options": [
-          "app"
-        ],
-        "depends_on" : [
+        "android": [
+          "appActivity",
           "appPackage"
+        ],
+        "global" : [
+          ""
         ]
       },
-      {
-        "name": "appPackage",
-        "required": false,
-        "appium_description": "Java package of the Android app you want to run",
-        "valid_options": "e.g. 'com.example.android.myApp'",
-        "usage_tips": [
-          "The application must be installed on the device in order for this to work",
-          "This capability (along with 'appActivity') IS required if you are not using the 'app' capability",
-          "'appPackage' does not work by itself - you must also specify 'appActivity' to use it"
+      "dependent_capabilities": [
+        ""
+      ]
+    },
+    {
+      "capability_name": "udid",
+      "supported_platform" : "global",
+      "required_capability": true,
+      "description": "Unique device identifier of the connected physical device",
+      "accepted_values" : {
+        "type": "string"
+      },
+      "usage_tips": [
+        "(iOS) The device's UDID (you can find this using iTunes with the device connected)",
+        "(Android) The value for the device property, 'ro.product.serialno'",
+        "Though it's not clear from the Appium documentation, for Android, UDID is also the serial number returned from the command 'adb devices'",
+        "Even though 'udid' is a required capability, it is only required for real device testing, which Happium employs exclusively"
+      ],
+      "alternate_capabilities": {
+        "ios": [
+          ""
         ],
-        "alternative_options": [
+        "android": [
+          ""
+        ],
+        "global" : [
+          ""
+        ]
+      },
+      "dependent_capabilities": [
+        ""
+      ]
+    },
+    {
+      "capability_name": "appActivity",
+      "supported_platform" : "android",
+      "required_capability": false,
+      "description": "Activity name for the Android activity you want to launch from your package. This often needs to be preceded by a '.' (e.g., .MainActivity instead of MainActivity)",
+      "accepted_values" : {
+        "type": "string"
+      },
+      "usage_tips": [
+        "e.g. 'MainActivity' or '.Settings'",
+        "It's most useful to set this to the name of the activity that runs on startup",
+        "This capability (along with 'appPackage') IS required if you are not using the 'app' capability",
+        "'appActivity' does not work by itself - you must also specify 'appPackage' to use it"
+      ],
+      "alternate_capabilities": {
+        "ios": [
+          ""
+        ],
+        "android": [
+          ""
+        ],
+        "global" : [
           "app"
-        ],
-        "depends_on" : [
-          "appActivity"
         ]
       },
-      {
-        "name": "autoGrantPermissions",
-        "required": false,
-        "appium_description": "Have Appium automatically determine which permissions your app requires and grant them to the app on install.",
-        "valid_options": {
-          "value_type": "boolean"
-        },
-        "usage_tips": [
-          "Permission prompts can disrupt automation scripts - because of this, it's recommended you set this to 'true'"
-        ]
-      }
-    ],
-    "ios": [
-      {
-        "name": "bundleId",
-        "appium_description": "Bundle ID of the app under test. Useful for starting an app on a real device or for using other caps which require the bundle ID during test startup.",
-        "valid_options": {
-          "value_type": "string",
-          "value_tip":"e.g. io.appium.TestApp"
-        },
-        "usage_tips": [
-          "The device must be installed on the device in order for this to work"
+      "dependent_capabilities": [
+        "appPackage"
+      ]
+    },
+    {
+      "capability_name": "appPackage",
+      "supported_platform" : "android",
+      "required_capability": false,
+      "description": "Java package of the Android app you want to run",
+      "accepted_values" : {
+        "type": "string"
+      },
+      "usage_tips": [
+        "e.g. 'com.example.android.myApp'",
+        "The application must be installed on the device in order for this to work",
+        "This capability (along with 'appActivity') IS required if you are not using the 'app' capability",
+        "'appPackage' does not work by itself - you must also specify 'appActivity' to use it"
+      ],
+      "alternate_capabilities": {
+        "ios": [
+          ""
         ],
-        "alternative_options": [
+        "android": [
+          ""
+        ],
+        "global": [
           "app"
         ]
       },
-      {
-        "name": "autoAcceptAlerts",
-        "appium_description": "Accept all iOS alerts automatically if they pop up. This includes privacy access permission alerts (e.g., location, contacts, photos). Default is false. Does not work on XCUITest-based tests.",
-        "valid_options": {
-          "value_type": "boolean"
-        },
-        "usage_tips": [
-          "Permission prompts can disrupt automation scripts - because of this, it's recommended you set this to 'true'"
+      "dependent_capabilities": [
+        "appActivity"
+      ]
+    },
+    {
+      "capability_name": "autoGrantPermissions",
+      "supported_platform" : "android",
+      "required_capability": false,
+      "description": "Have Appium automatically determine which permissions your app requires and grant them to the app on install.",
+      "accepted_values" : {
+        "type": "boolean"
+      },
+      "usage_tips": [
+        "Permission prompts can disrupt automation scripts - because of this, it's recommended you set this to 'true'"
+      ],
+      "alternate_capabilities": {
+        "ios": [
+          ""
+        ],
+        "android": [
+          ""
         ]
-      }
-    ]
+      },
+      "dependent_capabilities": [
+        ""
+      ]
+    },
+    {
+      "capability_name": "bundleId",
+      "supported_platform" : "ios",
+      "required_capability": false,
+      "description": "Bundle ID of the app under test. Useful for starting an app on a real device or for using other caps which require the bundle ID during test startup.",
+      "accepted_values" : {
+        "type": "string"
+      },
+      "usage_tips": [
+        "e.g. io.appium.TestApp",
+        "The app must be installed on the device in order for this to work"
+      ],
+      "alternate_capabilities": {
+        "ios": [
+          ""
+        ],
+        "android": [
+          ""
+        ],
+        "global": [
+          "app"
+        ]
+      },
+      "dependent_capabilities": [
+        "udid"
+      ]
+    },
+    {
+      "capability_name": "autoAcceptAlerts",
+      "supported_platform" : "ios",
+      "required_capability": false,
+      "description": "Accept all iOS alerts automatically if they pop up. This includes privacy access permission alerts (e.g., location, contacts, photos). Default is false. Does not work on XCUITest-based tests.",
+      "accepted_values" : {
+        "type": "boolean"
+      },
+      "usage_tips": [
+        "Permission prompts can disrupt automation scripts - because of this, it's recommended you set this to 'true'"
+      ],
+      "alternate_capabilities": {
+        "ios": [
+          ""
+        ],
+        "android": [
+          ""
+        ]
+      },
+      "dependent_capabilities": [
+        ""
+      ]
+    }
+  ]
 
-  }
 }
