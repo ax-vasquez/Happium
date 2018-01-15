@@ -26,62 +26,25 @@ public class SupportedDesiredCapability {
      * iOS, Android, or global
      */
     @Column(name = "supported_platform", columnDefinition = "text", nullable = false)
-    @Getter @Setter String supportedPlatform;
+    @Getter @Setter private String supportedPlatform;
 
     /**
      * Indicates if this capability is typically required
      */
     @Column(name = "is_required", columnDefinition = "boolean",nullable = false)
-    @Getter @Setter boolean isRequired;
+    @Getter @Setter private boolean isRequired;
 
     /**
      * Stores a description of this capability
      */
     @Column(name = "description", columnDefinition = "text", nullable = false)
-    @Getter @Setter String description;
+    @Getter @Setter private String description;
 
     /**
      * Indicates what type of values this capability accepts
      */
-    @Column(name = "accepted_value_type", columnDefinition = "text")
-    @Getter @Setter String acceptedValueType;
-
-    /**
-     * Only required if the acceptedValueType is "list_option"
-     */
-    @Column(name = "accepted_values_list", columnDefinition = "text[]")
-    @Getter @Setter String[] acceptedValuesList;
-
-    /**
-     * List of tips on how this capability should be used. This
-     * can be empty
-     */
-    @Column(name = "usage_tips", columnDefinition = "text[]")
-    @Getter @Setter String[] usageTips;
-
-    /**
-     * List of Android capabilities that can be used instead of this capability (if any)
-     */
-    @Column(name = "alt_android_capabilities", columnDefinition = "text[]")
-    @Getter @Setter String[] altAndroidCapabilities;
-
-    /**
-     * List of iOS capabilities that can be used instead of this capability (if any)
-     */
-    @Column(name = "alt_ios_capabilities", columnDefinition = "text[]")
-    @Getter @Setter String[] altIOSCapabilities;
-
-    /**
-     * List of Global capabilities that can be used instead of this capability (if any)
-     */
-    @Column(name = "alt_global_capabilities", columnDefinition = "text[]")
-    @Getter @Setter String[] altGlobalCapabilities;
-
-    /**
-     * List of capabilities that this capability requires in order to work
-     */
-    @Column(name = "dependent_capabilities", columnDefinition = "text[]")
-    @Getter @Setter String[] dependentCapabilities;
+    @Column(name = "accepted_value_type", columnDefinition = "text", nullable = false)
+    @Getter @Setter private String acceptedValueType;
 
     /**
      * Convenient method to print out the device properties
@@ -92,13 +55,8 @@ public class SupportedDesiredCapability {
     public String toString() {
         return String.format(
                 "SupportedDesiredCapability[name='%s', supported_platform='%s', required_capability='%s'," +
-                        "description='%s', accepted_value_type='%s', accepted_values='%s', usage_tips='%s'" +
-                        "alt_android_capabilities='%s', alt_ios_capabilities='%s', alt_global_capabilities='%s'" +
-                        "dependent_capabilities='%s'",
-                name, supportedPlatform, isRequired, description,
-                acceptedValueType, acceptedValuesList, usageTips,
-                altAndroidCapabilities, altIOSCapabilities, altGlobalCapabilities,
-                dependentCapabilities
+                        "description='%s', accepted_value_type='%s'",
+                name, supportedPlatform, isRequired, description, acceptedValueType
         );
     }
 

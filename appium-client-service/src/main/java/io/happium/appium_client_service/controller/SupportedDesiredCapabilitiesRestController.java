@@ -31,16 +31,9 @@ public class SupportedDesiredCapabilitiesRestController {
      * @return
      */
     @RequestMapping(value = "/supported_capabilities", method = RequestMethod.GET, produces = "application/json")
-    public SupportedDesiredCapability[] getAllSupportedCapabilities() {
+    public List<SupportedDesiredCapability> getAllSupportedCapabilities() {
 
-        // Check if table is empty
-        if ( supportedDesiredCapabilityService.getSupportedCapabilities().isEmpty() ) {
-
-            this.supportedDesiredCapabilityService.initializeSupportedCapabilityTable();
-
-        }
-
-        return (SupportedDesiredCapability[]) supportedDesiredCapabilityService.getSupportedCapabilities().toArray();
+        return supportedDesiredCapabilityService.getAllSupportedCapabilities();
 
     }
 

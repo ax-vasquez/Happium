@@ -16,6 +16,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+/**
+ * This configuration class contains all beans which may be used
+ * for interacting with a local database DataSource
+ */
 @Configuration
 @Transactional
 public class DatabaseConfiguration {
