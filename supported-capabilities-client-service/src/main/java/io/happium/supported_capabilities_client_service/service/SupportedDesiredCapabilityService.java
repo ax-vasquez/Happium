@@ -1,9 +1,9 @@
-package io.happium.appium_client_service.service;
+package io.happium.supported_capabilities_client_service.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.happium.appium_client_service.persistence.SupportedDesiredCapability;
-import io.happium.appium_client_service.persistence.SupportedDesiredCapabilityCrudRepository;
+import io.happium.supported_capabilities_client_service.persistence.SupportedDesiredCapability;
+import io.happium.supported_capabilities_client_service.persistence.SupportedDesiredCapabilityCrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -75,6 +74,10 @@ public class SupportedDesiredCapabilityService {
 
     }
 
+    /**
+     * Initialization method to load the supported capabilities file
+     * and add them to a local database instance
+     */
     @PostConstruct
     public void initTable() {
 
@@ -86,6 +89,7 @@ public class SupportedDesiredCapabilityService {
 
             Resource capsFileResource = applicationContext.getResource("classpath:supported_desired_capabilities.json");
 
+            // Read in file as List of DesiredCapability objects (Jackson databind)
             List<SupportedDesiredCapability> supportedDesiredCapabilitiesList
                     = mapper.readValue( capsFileResource.getFile(), new TypeReference< List<SupportedDesiredCapability>>() {} );
             logger.debug("Saving supported capabilities to local storage");
@@ -100,6 +104,11 @@ public class SupportedDesiredCapabilityService {
 
     }
 
+    /**
+     * Utility method to retrieve all of the SupportedCapabilities
+     *
+     * @return
+     */
     public List<SupportedDesiredCapability> getAllSupportedCapabilities() {
         return (List<SupportedDesiredCapability>) supportedDesiredCapabilityCrudRepository.findAll();
     }

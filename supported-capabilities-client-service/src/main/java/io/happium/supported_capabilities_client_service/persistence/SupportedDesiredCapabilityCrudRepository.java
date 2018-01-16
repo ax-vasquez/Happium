@@ -1,4 +1,4 @@
-package io.happium.appium_client_service.persistence;
+package io.happium.supported_capabilities_client_service.persistence;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

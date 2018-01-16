@@ -1,7 +1,7 @@
-package io.happium.appium_client_service.controller;
+package io.happium.supported_capabilities_client_service.controller;
 
-import io.happium.appium_client_service.persistence.SupportedDesiredCapability;
-import io.happium.appium_client_service.service.SupportedDesiredCapabilityService;
+import io.happium.supported_capabilities_client_service.persistence.SupportedDesiredCapability;
+import io.happium.supported_capabilities_client_service.service.SupportedDesiredCapabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

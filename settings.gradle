@@ -3,4 +3,5 @@ rootProject.name = 'happium'
 include 'eureka-registry-service'
 include 'android-device-manager-client-service'
 include 'appium-client-service'
+include 'supported-capabilities-client-service'
 

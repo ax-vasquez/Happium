@@ -1,0 +1,65 @@
+[
+    {
+      "name": "platformName",
+      "supportedPlatform": "global",
+      "required": true,
+      "description": "Which mobile OS platform to use",
+      "acceptedValueType": "list_option"
+    },
+    {
+      "name": "deviceName",
+      "supportedPlatform": "global",
+      "required": true,
+      "description": "The kind of mobile device or emulator to use",
+      "acceptedValueType": "string"
+    },
+    {
+      "name": "app",
+      "supportedPlatform": "global",
+      "required": true,
+      "description": "The absolute local path or remote http URL to an .ipa or .apk file, or a .zip containing one of these. Appium will attempt to install this app binary on the appropriate device first.",
+      "acceptedValueType": "url"
+    },
+    {
+      "name": "udid",
+      "supportedPlatform": "global",
+      "required": true,
+      "description": "Unique device identifier of the connected physical device",
+      "acceptedValueType": "string"
+    },
+    {
+      "name": "appActivity",
+      "supportedPlatform": "android",
+      "required": false,
+      "description": "Activity name for the Android activity you want to launch from your package. This often needs to be preceded by a '.' (e.g., .MainActivity instead of MainActivity)",
+      "acceptedValueType": "string"
+    },
+    {
+      "name": "appPackage",
+      "supportedPlatform": "android",
+      "required": false,
+      "description": "Java package of the Android app you want to run",
+      "acceptedValueType": "string"
+    },
+    {
+      "name": "autoGrantPermissions",
+      "supportedPlatform": "android",
+      "required": false,
+      "description": "Have Appium automatically determine which permissions your app requires and grant them to the app on install.",
+      "acceptedValueType": "boolean"
+    },
+    {
+      "name": "bundleId",
+      "supportedPlatform": "ios",
+      "required": false,
+      "description": "Bundle ID of the app under test. Useful for starting an app on a real device or for using other caps which require the bundle ID during test startup.",
+      "acceptedValueType": "string"
+    },
+    {
+      "name": "autoAcceptAlerts",
+      "supportedPlatform": "ios",
+      "required": false,
+      "description": "Accept all iOS alerts automatically if they pop up. This includes privacy access permission alerts (e.g., location, contacts, photos). Default is false. Does not work on XCUITest-based tests.",
+      "acceptedValueType": "boolean"
+    }
+]
