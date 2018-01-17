@@ -1,9 +1,7 @@
-package io.happium.junit_client_service.supported_capabilities_client_service.service;
+package io.happium.supported_capabilities_client_service.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.happium.junit_client_service.supported_capabilities_client_service.persistence.SupportedDesiredCapability;
-import io.happium.junit_client_service.supported_capabilities_client_service.persistence.SupportedDesiredCapabilityCrudRepository;
 import io.happium.supported_capabilities_client_service.persistence.SupportedDesiredCapability;
 import io.happium.supported_capabilities_client_service.persistence.SupportedDesiredCapabilityCrudRepository;
 import org.slf4j.Logger;

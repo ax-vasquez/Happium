@@ -1,4 +1,4 @@
-package io.happium.junit_client_service.eureka_registry_service;
+package io.happium.eureka_registry_service;
 
 import io.happium.eureka_registry_service.configuration.EurekaServerConfiguration;
 import org.springframework.boot.SpringApplication;

@@ -1,4 +1,4 @@
-package io.happium.junit_client_service.supported_capabilities_client_service.configuration;
+package io.happium.selenium_server_service.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -46,7 +46,7 @@ public class DatabaseConfiguration {
         em.setDataSource(dataSource());
 
         // Location of application entities and Repositories - should be in persistence package
-        em.setPackagesToScan( "io.happium.supported_capabilities_client_service.persistence" );
+        em.setPackagesToScan( "io.happium.selenium_server_service.persistence" );
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

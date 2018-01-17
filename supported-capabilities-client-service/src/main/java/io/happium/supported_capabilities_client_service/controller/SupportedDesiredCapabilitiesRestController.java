@@ -1,6 +1,5 @@
-package io.happium.junit_client_service.supported_capabilities_client_service.controller;
+package io.happium.supported_capabilities_client_service.controller;
 
-import io.happium.junit_client_service.supported_capabilities_client_service.persistence.SupportedDesiredCapability;
 import io.happium.supported_capabilities_client_service.persistence.SupportedDesiredCapability;
 import io.happium.supported_capabilities_client_service.service.SupportedDesiredCapabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 
 @RestController

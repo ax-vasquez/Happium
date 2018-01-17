@@ -1,4 +1,4 @@
-package io.happium.junit_client_service.eureka_registry_service.configuration;
+package io.happium.eureka_registry_service.configuration;
 
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.cloud.netflix.eureka.EurekaClientConfigBean;

@@ -1,10 +1,13 @@
 package io.happium.happium_client_service.service;
 
+import io.happium.happium_client_service.persistence.HappiumSession;
 import io.happium.happium_client_service.persistence.HappiumSessionCrudRepository;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Controlling Happium Service class
@@ -28,6 +31,10 @@ public class HappiumService {
 
     }
 
+    public List<HappiumSession> findAll() {
 
+        return (List<HappiumSession>) happiumSessionCrudRepository.findAll();
+
+    }
 
 }

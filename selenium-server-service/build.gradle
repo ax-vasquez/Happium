@@ -1,0 +1,13 @@
+jar {
+    baseName = 'selenium-server-service'
+    version = '0.0.1-SNAPSHOT'
+}
+
+dependencies {
+    compile('org.seleniumhq.selenium:selenium-java:3.8.1')                      // Selenium Java
+    compile('org.seleniumhq.selenium:selenium-server:3.8.1')                    // Selenium Server
+    compile('org.postgresql:postgresql:42.1.4')                                 // PostgreSQL driver
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')            // Spring JPA Starter
+    compile('org.springframework.boot:spring-boot-starter-web')                 // Spring Web
+    compile('org.springframework.cloud:spring-cloud-netflix-eureka-server')     // Spring Cloud Netflix Eureka Server
+}

@@ -1,4 +1,4 @@
-package io.happium.junit_client_service.supported_capabilities_client_service.persistence;
+package io.happium.supported_capabilities_client_service.persistence;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

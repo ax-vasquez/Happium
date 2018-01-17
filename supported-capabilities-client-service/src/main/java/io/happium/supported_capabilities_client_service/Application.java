@@ -1,6 +1,5 @@
-package io.happium.junit_client_service.supported_capabilities_client_service;
+package io.happium.supported_capabilities_client_service;
 
-import io.happium.junit_client_service.supported_capabilities_client_service.configuration.DatabaseConfiguration;
 import io.happium.supported_capabilities_client_service.configuration.DatabaseConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
