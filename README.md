@@ -1,7 +1,7 @@
 # Happium
 Happium is a self-contained test automation framework. It's designed to provie a quick and easy test automation solution to developers and/or companies who previously had no automation in their workflow.
 
-Since Happium is a standalone service, it does not care about the exact implementation of your application/webapp. Happium is desined to run *along side* your production application(s) to eliminate any need for direct integration of Happium into your platform. However, should you prefer to implement your own custom integration with Happium, simply use the same endpoints that are used to populate the default Happium Dashboard fields.
+Since Happium is a standalone service, it does not care about the exact implementation of your application/webapp. Happium is designed to run *along side* your production application(s) to eliminate any need for direct integration of Happium into your platform. However, should you prefer to implement your own custom integration with Happium, simply use the same endpoints that are used to populate the default Happium Dashboard fields.
 
 ## Assumed Knowledge (Click Links to Learn More)
 In order to make the most use out of this documentation, I have provided a list of concepts you should be familiar with. These are the
