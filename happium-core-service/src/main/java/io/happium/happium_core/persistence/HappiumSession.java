@@ -10,10 +10,10 @@ import org.openqa.selenium.remote.service.DriverService;
 import javax.persistence.*;
 
 @Entity
-public class Payload {
+public class HappiumSession {
 
     /**
-     * Happium-specific Payload Identifier
+     * Happium-specific HappiumSession Identifier
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
