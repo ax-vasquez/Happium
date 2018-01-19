@@ -1,11 +1,16 @@
+/**
+ * Base configuration for this sub module is inherited
+ * from the happium build.gradle file.
+ */
 jar {
-    baseName = 'junit-client-service'
+    baseName = 'hapium-core-service'
     version = '0.0.1-SNAPSHOT'
 }
 
 dependencies {
-    compile('io.appium:java-client:6.0.0-BETA2')
     compile('org.postgresql:postgresql:42.1.4')                                 // PostgreSQL driver
+    compile('org.seleniumhq.selenium:selenium-java:3.8.1')
+    compile('io.appium:java-client:6.0.0-BETA2')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')            // Spring JPA Starter
     compile('org.springframework.boot:spring-boot-starter-web')                 // Spring Web
     compile('org.springframework.cloud:spring-cloud-netflix-eureka-server')     // Spring Cloud Netflix Eureka Server
