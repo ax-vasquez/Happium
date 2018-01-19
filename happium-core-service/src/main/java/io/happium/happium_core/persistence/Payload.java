@@ -34,6 +34,13 @@ public class Payload {
     @Getter @Setter private Platform platform;
 
     /**
+     * URL Address of the hosting Selenium server (for Appium, this is the address of the
+     * AppiumDriverLocalService instance)
+     */
+    @Column(name = "server_url", columnDefinition = "text")
+    @Getter @Setter private String serverUrl;
+
+    /**
      * Optional attribute that sets the type of browser this is - not applicable
      * when testing native mobile apps
      */
@@ -41,7 +48,7 @@ public class Payload {
     @Getter @Setter private Browser browser;
 
     /**
-     * URL to return to between test suites
+     * URL to return to between test suites (browser test runs only)
      */
     @Column(name = "default_url", columnDefinition = "text")
     @Getter @Setter private String defaultUrl;

@@ -1,10 +1,8 @@
-package io.happium.junit_client_service.android_device_manager_client_service;
+package io.happium.android_device_manager_client_service;
 
 import io.happium.android_device_manager_client_service.configuration.AsyncConfiguration;
 import io.happium.android_device_manager_client_service.configuration.DatabaseConfiguration;
 import io.happium.android_device_manager_client_service.configuration.EurekaClientConfiguration;
-import io.happium.junit_client_service.android_device_manager_client_service.configuration.AsyncConfiguration;
-import io.happium.junit_client_service.android_device_manager_client_service.configuration.DatabaseConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;

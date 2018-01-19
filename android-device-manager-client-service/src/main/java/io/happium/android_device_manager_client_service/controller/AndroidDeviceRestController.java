@@ -1,8 +1,7 @@
-package io.happium.junit_client_service.android_device_manager_client_service.controller;
+package io.happium.android_device_manager_client_service.controller;
 
 import io.happium.android_device_manager_client_service.persistence.AndroidDevice;
 import io.happium.android_device_manager_client_service.service.AndroidDeviceService;
-import io.happium.junit_client_service.android_device_manager_client_service.persistence.AndroidDevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

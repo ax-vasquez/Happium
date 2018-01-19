@@ -1,9 +1,7 @@
-package io.happium.junit_client_service.android_device_manager_client_service.service;
+package io.happium.android_device_manager_client_service.service;
 
 import io.happium.android_device_manager_client_service.persistence.AndroidDevice;
 import io.happium.android_device_manager_client_service.persistence.AndroidDeviceCrudRepository;
-import io.happium.junit_client_service.android_device_manager_client_service.persistence.AndroidDevice;
-import io.happium.junit_client_service.android_device_manager_client_service.persistence.AndroidDeviceCrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.vidstige.jadb.DeviceDetectionListener;

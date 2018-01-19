@@ -1,4 +1,4 @@
-package io.happium.junit_client_service.android_device_manager_client_service.service;
+package io.happium.android_device_manager_client_service.service;
 
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;

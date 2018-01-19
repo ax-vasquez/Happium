@@ -1,4 +1,4 @@
-package io.happium.junit_client_service.android_device_manager_client_service.persistence;
+package io.happium.android_device_manager_client_service.persistence;
 
 import lombok.AccessLevel;
 import lombok.Getter;
