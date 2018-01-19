@@ -3,7 +3,7 @@
  * from the happium build.gradle file.
  */
 jar {
-    baseName = 'hapium-core-service'
+    baseName = 'hapium-node-service'
     version = '0.0.1-SNAPSHOT'
 }
 

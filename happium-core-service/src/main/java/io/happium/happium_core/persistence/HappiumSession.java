@@ -13,18 +13,15 @@ import javax.persistence.*;
 public class HappiumSession {
 
     /**
-     * Happium-specific HappiumSession Identifier
+     * Happium-specific HappiumSession Identifier - this value should
+     * be globally-unique (within Happium). This ID is used in creating
+     * the master "Session" list - there should be no repeat or missing
+     * entries of HappiumSessions
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "payload_id", nullable = false)
-    @Getter @Setter private Long payloadId;
-
-    /**
-     * Populated via getSessionId() method
-     */
-    @Column(name = "selenium_session_id", nullable = false, columnDefinition = "text")
-    @Getter @Setter private String seleniumSessionId;
+    @Column(name = "happium_session_id", nullable = false)
+    @Getter @Setter private Long happiumSessionId;
 
     /**
      * Stores the platform name for the host system (if testing browser), or

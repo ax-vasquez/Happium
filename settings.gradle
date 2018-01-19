@@ -6,4 +6,6 @@ include 'appium-client-service'
 include 'supported-capabilities-client-service'
 include 'happium-client-service'
 include 'happium-core-service'
+include 'happium-hub-service'
+include 'happium-node-service'
 
