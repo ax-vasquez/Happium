@@ -7,4 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface HappiumHubCrudRepository extends CrudRepository< HappiumHub, Long > {
+
+
+
 }
