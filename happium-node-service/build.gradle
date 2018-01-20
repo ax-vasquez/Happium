@@ -9,7 +9,8 @@ jar {
 
 dependencies {
     compile('org.postgresql:postgresql:42.1.4')                                 // PostgreSQL driver
-    compile('org.seleniumhq.util:util-java:3.8.1')
+    compile('org.seleniumhq.selenium:selenium-java:3.8.1')
+    compile('org.seleniumhq.selenium:selenium-server:3.8.1')
     compile('io.appium:java-client:6.0.0-BETA2')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')            // Spring JPA Starter
     compile('org.springframework.boot:spring-boot-starter-web')                 // Spring Web
