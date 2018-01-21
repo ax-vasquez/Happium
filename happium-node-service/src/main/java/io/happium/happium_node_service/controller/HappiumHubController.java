@@ -38,16 +38,4 @@ public class HappiumHubController {
 
     }
 
-    /**
-     * Starts the underlying HappiumHub after it has been instantiated
-     *
-     */
-    @PostConstruct
-    private void _init() {
-
-        happiumHubService.setHappiumHubUsingDefaults();
-        happiumHubService.startHappiumHub();
-
-    }
-
 }

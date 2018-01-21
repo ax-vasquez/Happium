@@ -5,11 +5,11 @@ import io.happium.happium_node_service.persistence.HappiumHubCrudRepository;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.openqa.grid.internal.utils.configuration.GridHubConfiguration;
-import org.openqa.grid.web.Hub;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import org.openqa.grid.internal.utils.configuration.GridHubConfiguration;
 
 /**
  * Service class for HappiumHub
@@ -41,31 +41,6 @@ public class HappiumHubService {
     @Getter @Setter private HappiumHub happiumHub;
 
     /**
-     * Utility method to initialize this service's HappiumHub using
-     * the default settings
-     */
-    public void setHappiumHubUsingDefaults() {
-
-        happiumHub = new HappiumHub();
-        happiumHub.setHub( new Hub( defaultGridHubConfiguration ));
-        happiumHub.setRunning( false );
-
-    }
-
-    /**
-     * Configures this hub using the configuration provided in the String
-     * representation of a GridHubConfiguration object
-     *
-     * @param gridHubConfigJsonString
-     */
-    public void setHappiumHubUsingJsonConfig( String gridHubConfigJsonString ) {
-
-        happiumHub = new HappiumHub( gridHubConfigJsonString );
-        happiumHubCrudRepository.save( happiumHub );
-
-    }
-
-    /**
      * Service level method to start this service's underlying HappiumHub
      */
     @Async("threadPoolTaskExecutor")
@@ -94,18 +69,6 @@ public class HappiumHubService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-    }
-
-    /**
-     * Utility method to retrieve the underlying HappiumHub's
-     * Configuration
-     *
-     * @return
-     */
-    public String getHappiumHubConfiguration() {
-
-        return happiumHub.getHub().getConfiguration().toString();
 
     }
 

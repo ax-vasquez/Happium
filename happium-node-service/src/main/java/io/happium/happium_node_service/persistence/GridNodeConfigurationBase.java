@@ -1,6 +1,7 @@
 package io.happium.happium_node_service.persistence;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -16,8 +17,8 @@ import java.io.Serializable;
  *     properties that both Node and Hub classes, but
  *     this class cannot be directly-instantiated.
  */
-@Entity
-abstract class HappiumNodeBase implements Serializable {
+@NoArgsConstructor
+abstract class GridNodeConfigurationBase implements Serializable {
 
     /**
      * From Selenium Help:

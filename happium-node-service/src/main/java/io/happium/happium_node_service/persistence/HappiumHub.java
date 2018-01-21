@@ -1,14 +1,13 @@
 package io.happium.happium_node_service.persistence;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.br.CPF;
-import org.openqa.grid.internal.utils.configuration.GridHubConfiguration;
 import org.openqa.grid.web.Hub;
+import org.openqa.grid.internal.utils.configuration.GridHubConfiguration;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * Represents a HappiumHub object
@@ -27,8 +26,8 @@ import java.io.Serializable;
  *     of the service on the host machine.
  */
 @Entity
-@NoArgsConstructor
-public class HappiumHub extends HappiumNodeBase {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)      // For use with JPA only
+public class HappiumHub extends GridNodeConfigurationBase {
 
     /**
      * Underlying Hub object that supports this HappiumHub. This is
@@ -41,19 +40,7 @@ public class HappiumHub extends HappiumNodeBase {
      * Stores this HappiumHub's current configuration
      */
     @Transient
-    @Getter @Setter GridHubConfiguration gridHubConfiguration;
-
-    /**
-     * Constructor to initialize this HappiumHub using the provided
-     * Grid Hub configuration JSON as a string
-     *
-     * @param gridHubConfigurationJsonString
-     */
-    public HappiumHub( String gridHubConfigurationJsonString ) {
-
-        hub = new Hub( GridHubConfiguration.loadFromJSON( gridHubConfigurationJsonString ) );
-
-    }
+    @Getter @Setter private GridHubConfiguration gridHubConfiguration;
 
     /**
      * Auto-generate ID for this HappiumHub instance
@@ -103,16 +90,6 @@ public class HappiumHub extends HappiumNodeBase {
      * From Selenium Help:
      *
      * <p>
-     *     <String> filename: a JSON file (following grid2 format),
-     *     which defines the hub properties
-     */
-    @Column(name = "hub_config_file_name", columnDefinition = "text")
-    @Getter @Setter private String hubConfigJsonFileName;
-
-    /**
-     * From Selenium Help:
-     *
-     * <p>
      *     <String> class name : a class implementing the Prioritizer
      *     interface. Specify a custom Prioritizer if you want to sort
      *     the order in which new session requests are processed when
@@ -146,5 +123,92 @@ public class HappiumHub extends HappiumNodeBase {
      */
     @Column(name = "throw_on_capability_not_present", columnDefinition = "boolean")
     @Getter @Setter private boolean throwOnCapabilityNotPresent;
+
+    /**
+     * Most-basic HappiumHub constructor - only initializes the bare-minimum
+     * settings in order to start up a new HappiumHub
+     *
+     * <p>
+     *     Though Selenium does provide defaults to use in the event that a
+     *     setting is missing, this is not desirable for Happium as it supports
+     *     both mobile and browser tests. As such, the CapabilityMatcher interface
+     *     will likely need to be implemented to support Appium-specific capabilities,
+     *     which MUST be supported by Happium out-of-the box.
+     *
+     * @param capabilityMatcher
+     * @param newSessionWaitTimeout
+     * @param throwOnCapabilityNotPresent
+     */
+    public HappiumHub( String capabilityMatcher, int newSessionWaitTimeout, boolean throwOnCapabilityNotPresent,
+                       boolean debugEnabled, String hostAddress, int port ) {
+
+        // Happium-controlled Attribute
+        this.isRunning = false;
+
+        // Selenium Grid2 Hub-specific settings
+        this.setRole("hub");
+        this.capabilityMatcher = capabilityMatcher;
+        this.newSessionWaitTimeout = newSessionWaitTimeout;
+        this.throwOnCapabilityNotPresent = throwOnCapabilityNotPresent;
+
+        // Selenium Grid2 Node-specific settings
+        this.setDebugEnabled( debugEnabled );
+        this.setHostAddress( hostAddress );
+        this.setPort( port );
+
+    }
+
+    /**
+     * Most-complex constructor - initializes new instance with all possible settings
+     *
+     * @param browserTimeout
+     * @param capabilityMatcher
+     * @param cleanUpCycle
+     * @param debugEnabled
+     * @param hostAddress
+     * @param jettyMaxThreads
+     * @param logFileName
+     * @param maxSessions
+     * @param newSessionWaitTimeout
+     * @param passThroughEnabled
+     * @param port
+     * @param prioritizer
+     * @param registry
+     * @param timeout
+     * @param withServlets
+     * @param withoutServlets
+     * @param throwOnCapabilityNotPresent
+     */
+    public HappiumHub( int browserTimeout, String capabilityMatcher, int cleanUpCycle, boolean debugEnabled,
+                       String hostAddress, int jettyMaxThreads, String logFileName, int maxSessions,
+                       int newSessionWaitTimeout, boolean passThroughEnabled, int port, String prioritizer,
+                       String registry, int timeout, String [] withServlets, String [] withoutServlets, boolean throwOnCapabilityNotPresent ) {
+
+        // Happium-controlled Attribute
+        this.isRunning = false;
+
+        // Selenium Grid2 Hub-specific settings
+        this.setRole("hub");
+        this.capabilityMatcher = capabilityMatcher;
+        this.newSessionWaitTimeout = newSessionWaitTimeout;
+        this.prioritizer = prioritizer;
+        this.registry = registry;
+        this.throwOnCapabilityNotPresent = throwOnCapabilityNotPresent;
+
+        // Selenium Grid2 Node-specific settings
+        this.setDebugEnabled( debugEnabled );
+        this.setHostAddress( hostAddress );
+        this.setPort( port );
+        this.setBrowserTimeout( browserTimeout );
+        this.setCleanUpCycle( cleanUpCycle );
+        this.setJettyMaxThreads( jettyMaxThreads );
+        this.setLogFileName( logFileName );
+        this.setMaxSessions( maxSessions );
+        this.setPassThroughEnabled( passThroughEnabled );
+        this.setTimeout( timeout );
+        this.setWithServlets( withServlets );
+        this.setWithoutServlets( withoutServlets );
+
+    }
 
 }

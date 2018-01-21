@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
-public class HappiumNode extends HappiumNodeBase {
+public class HappiumNode extends GridNodeConfigurationBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
