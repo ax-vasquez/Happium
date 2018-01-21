@@ -3,6 +3,7 @@ package io.happium.happium_node_service.persistence;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.openqa.grid.selenium.proxy.DefaultRemoteProxy;
 
 import javax.persistence.*;
 
@@ -189,5 +190,8 @@ public class HappiumNode extends GridNodeBase {
      */
     @Column(name = "unregister_if_still_down_after", columnDefinition = "int")
     @Getter @Setter private int unregisterIfStillDownAfter;
+
+    @Transient
+    @Getter @Setter private DefaultRemoteProxy defaultRemoteProxy;
 
 }

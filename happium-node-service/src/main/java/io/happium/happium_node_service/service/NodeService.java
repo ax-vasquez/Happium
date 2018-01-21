@@ -5,6 +5,7 @@ import io.happium.happium_node_service.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.openqa.grid.internal.TestSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Experimental class to configure a vanilla Happium node
@@ -82,6 +84,30 @@ public class NodeService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+
+    /**
+     * After checking thread-safety, this opens up the underlying
+     * Proxy/TestSlot (however you want to look at it) to start
+     * processing requests - intermittently checked for "down" status
+     */
+    @Async("threadPoolTaskExecutor")
+    public void startHappiumNodePolling() {
+
+        happiumNode.getDefaultRemoteProxy().startPolling();
+
+    }
+
+    /**
+     * Creates a new TestSession on the underlying HappiumNode
+     *
+     * @param requestedCapabilities         Capabilities to start the session with
+     * @return                              TestSession, if able to start one - otherwise null
+     */
+    public TestSession getNewTestSession( Map<String, Object> requestedCapabilities ) {
+
+        return happiumNode.getDefaultRemoteProxy().getNewSession( requestedCapabilities );
 
     }
 

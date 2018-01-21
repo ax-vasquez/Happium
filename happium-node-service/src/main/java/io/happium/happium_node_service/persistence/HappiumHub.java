@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.openqa.grid.web.Hub;
-import org.openqa.grid.internal.utils.configuration.GridHubConfiguration;
 
 import javax.persistence.*;
 
@@ -116,11 +115,5 @@ public class HappiumHub extends GridNodeBase {
      */
     @Transient
     @Getter @Setter private Hub hub;
-
-    /**
-     * Stores this HappiumHub's current configuration
-     */
-    @Transient
-    @Getter @Setter private GridHubConfiguration gridHubConfiguration;
 
 }
