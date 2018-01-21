@@ -32,31 +32,13 @@ public class HappiumHubService {
      * Loads the provided default gridHubConfiguration located in resources/defaults/
      */
     @Autowired
-    @Getter @Setter private GridHubConfiguration defaultGridHubConfiguration;
+    @Getter @Setter private GridHubConfiguration gridHubConfiguration;
 
     /**
      * This service instance's supporting HappiumHub that all operations are
      * performed on
      */
     @Getter @Setter private HappiumHub happiumHub;
-
-    /**
-     * Service level method to start this service's underlying HappiumHub
-     */
-    @Async("threadPoolTaskExecutor")
-    public void startHappiumHub() {
-
-        try {
-
-            happiumHub.getHub().start();
-            happiumHub.setRunning( true );
-            happiumHubCrudRepository.save( happiumHub );
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 
     /**
      * Service level method to stop this service's underlying HappiumHub

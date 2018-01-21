@@ -14,11 +14,12 @@ import java.io.Serializable;
  * <p>
  *     This class is extended into both the Hub and
  *     Node classes. This class contains the shared
- *     properties that both Node and Hub classes, but
- *     this class cannot be directly-instantiated.
+ *     properties that both Node and Hub classes, and should
+ *     be used as the core grid node for this service
+ *     instance
  */
 @NoArgsConstructor
-abstract class GridNodeConfigurationBase implements Serializable {
+public class GridNodeBase implements Serializable {
 
     /**
      * From Selenium Help:
