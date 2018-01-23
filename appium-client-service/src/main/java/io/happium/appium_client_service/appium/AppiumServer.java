@@ -41,7 +41,7 @@ public class AppiumServer {
     /**
      * Represents Appium Server
      */
-    @Getter @Setter private AppiumDriverLocalService appiumDriverLocalService;  // Not persisted to table
+    @Getter @Setter private AppiumDriverLocalService appiumDriverLocalService;
 
     /**
      * Constructor is initialized with a new AppiumDriverLocalService

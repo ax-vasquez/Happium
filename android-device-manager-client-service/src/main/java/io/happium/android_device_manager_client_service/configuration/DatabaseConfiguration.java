@@ -41,8 +41,8 @@ public class DatabaseConfiguration {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
 
-        // Location of application entities - should be in persistence package
-        em.setPackagesToScan( "io.happium.android_device_manager_client_service.persistence" );
+        // Location of application entities - should be in component package
+        em.setPackagesToScan( "io.happium.android_device_manager_client_service.component" );
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
@@ -101,7 +101,7 @@ public class DatabaseConfiguration {
     }
 
     /**
-     * Required to automatically apply persistence exception translation to
+     * Required to automatically apply component exception translation to
      * any bean marked as a Repository.
      *
      * @return
