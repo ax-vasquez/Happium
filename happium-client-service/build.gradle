@@ -1,0 +1,22 @@
+/**
+ * Base configuration for this sub module is inherited
+ * from the happium build.gradle file.
+ */
+jar {
+    baseName = 'happium-client-service'
+    version = '0.0.1-SNAPSHOT'
+}
+
+repositories {
+    maven { url 'https://jitpack.io' }                                  // Required for Jadb import
+}
+
+dependencies {
+    compile('com.github.vidstige:jadb:v1.0.1')                                  // Jadb Library
+    compile('junit:junit:4.12')
+    compile('org.postgresql:postgresql:42.1.4')                                 // PostgreSQL driver
+    compile('io.appium:java-client:6.0.0-BETA2')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')            // Spring JPA Starter
+    compile('org.springframework.boot:spring-boot-starter-web')                 // Spring Web
+    compile('org.springframework.cloud:spring-cloud-netflix-eureka-server')     // Spring Cloud Netflix Eureka Server
+}
